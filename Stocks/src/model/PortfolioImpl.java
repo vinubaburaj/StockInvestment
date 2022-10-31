@@ -39,40 +39,40 @@ import java.time.format.DateTimeFormatter;
 
 public class PortfolioImpl implements Portfolio{
 
-
-  private String[] getStockData(String ticker, String date) {
-    String apiKey = "W0M1JOKC82EZEQA8";
-    URL url = null;
-
-    try {
-      url = new URL("https://www.alphavantage"
-              + ".co/query?function=TIME_SERIES_DAILY"
-              + "&outputsize=compact"
-              + "&symbol"
-              + "=" + ticker + "&apikey=" + apiKey + "&datatype=csv");
-    } catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
-              + "no longer works");
-    }
-
-    InputStream in = null;
-    try {
-      in = url.openStream();
-      Reader reader = new InputStreamReader(in);
-      BufferedReader br = new BufferedReader(reader);
-      br.readLine();
-      String line = br.readLine();
-      String[] lines = new String[6];
-
-      while (line != null) {
-        lines = line.split(",");
-        break;
-      }
-      return lines;
-    } catch (IOException e) {
-      throw new IllegalArgumentException("No price data found for " + ticker);
-    }
-  }
+//
+//  private String[] getStockData(String ticker, String date) {
+//    String apiKey = "W0M1JOKC82EZEQA8";
+//    URL url = null;
+//
+//    try {
+//      url = new URL("https://www.alphavantage"
+//              + ".co/query?function=TIME_SERIES_DAILY"
+//              + "&outputsize=compact"
+//              + "&symbol"
+//              + "=" + ticker + "&apikey=" + apiKey + "&datatype=csv");
+//    } catch (MalformedURLException e) {
+//      throw new RuntimeException("the alphavantage API has either changed or "
+//              + "no longer works");
+//    }
+//
+//    InputStream in = null;
+//    try {
+//      in = url.openStream();
+//      Reader reader = new InputStreamReader(in);
+//      BufferedReader br = new BufferedReader(reader);
+//      br.readLine();
+//      String line = br.readLine();
+//      String[] lines = new String[6];
+//
+//      while (line != null) {
+//        lines = line.split(",");
+//        break;
+//      }
+//      return lines;
+//    } catch (IOException e) {
+//      throw new IllegalArgumentException("No price data found for " + ticker);
+//    }
+//  }
 
 //  private void createXML2(Stocks[] stocks){
 //
@@ -87,7 +87,8 @@ public class PortfolioImpl implements Portfolio{
 
     LocalDate dateObj = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String date = dateObj.format(formatter);
+//    String date = dateObj.format(formatter);
+    String lastDate = "2022-10-28";
 
     try {
       DocumentBuilder builder = dbf.newDocumentBuilder();
@@ -103,14 +104,13 @@ public class PortfolioImpl implements Portfolio{
       root.appendChild(name);
 
       for(Stocks stock : stocks){
-        stock.fetchStockData();
-
+        stock.fillStockData(lastDate);
 
           //create stock
           Element stockElement = doc.createElement("Stock");
 
           Element dateElem = doc.createElement("Date");
-          Text dateText = doc.createTextNode(date);
+          Text dateText = doc.createTextNode(stock.getDate());
           dateElem.appendChild(dateText);
 
           Element stockTicker = doc.createElement("Stock-ticker");
@@ -138,7 +138,7 @@ public class PortfolioImpl implements Portfolio{
 
       DOMSource source = new DOMSource(doc);
 
-      String path = "src\\" + portfolioName;
+      String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName;
       File f = new File(path);
       Result result = new StreamResult(f);
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -324,7 +324,7 @@ public class PortfolioImpl implements Portfolio{
           String number = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
           String price = element.getElementsByTagName("Price").item(0).getTextContent();
 
-          String[] stockData =  getStockData(ticker, date);
+//          String[] stockData =  getStockData(ticker, date);
         }
       }
 

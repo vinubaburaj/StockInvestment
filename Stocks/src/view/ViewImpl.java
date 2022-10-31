@@ -36,4 +36,11 @@ public class ViewImpl implements View {
       }
       System.out.println(i + ". " + "Finished adding stocks, create portfolio now.");
   }
+
+  public void showNumberOfSharesMessage(){
+    System.out.println("Enter the number of shares you want to buy "
+    + "of this stock: ");
+    System.out.println("(Note: You can only buy whole number amount "
+            +"of shares)");
+  }
 }

@@ -24,4 +24,10 @@ public interface View {
    * Method that shows the options of stocks available in this program.
    */
   void showStockOptions();
+
+  /**
+   * Method to intimate user to enter the integer amount
+   * of shares to be bought.
+   */
+  void showNumberOfSharesMessage();
 }

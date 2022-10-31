@@ -1,6 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,75 +13,58 @@ import enums.stockTicker;
 public class Stocks {
   String stockName;
   stockTicker stockSymbol;
-  String purchaseDate;
+  String date;
   int numberOfShares;
-  String valueOfShare;
+  String valueOfShare; // price
 
 
-  public Stocks(String[] lines, String ticker){
-    this.purchaseDate = lines[0];
-    this.valueOfShare = lines[4];
-
-  }
+//  public Stocks(String[] lines, String ticker){
+//    this.date = lines[0];
+//    this.valueOfShare = lines[4];
+//
+//  }
 
   public Stocks(stockTicker ticker, int numberOfShares){
     this.stockSymbol = ticker;
     this.numberOfShares = numberOfShares;
   }
 
-  private void getStockData(){
-    String apiKey = "W0M1JOKC82EZEQA8";
-    URL url = null;
-
-    try {
-      url = new URL("https://www.alphavantage"
-              + ".co/query?function=TIME_SERIES_DAILY"
-              + "&outputsize=compact"
-              + "&symbol"
-              + "=" + this.stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
-    } catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
-              + "no longer works");
-    }
-  }
-
   /**
    * Method that fetches the data of a stock from an API and stores
    * it in its fields.
    */
-  void fetchStockData(){
-    String apiKey = "W0M1JOKC82EZEQA8";
-    URL url = null;
+  void fillStockData(String date){
 
-    try {
-      url = new URL("https://www.alphavantage"
-              + ".co/query?function=TIME_SERIES_DAILY"
-              + "&outputsize=compact"
-              + "&symbol"
-              + "=" + this.stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
-    } catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
-              + "no longer works");
-    }
-
-    InputStream in = null;
-    try {
-      in = url.openStream();
-      Reader reader = new InputStreamReader(in);
-      BufferedReader br = new BufferedReader(reader);
-      br.readLine();
-      String line = br.readLine();
-      String[] lines = new String[6];
-
-      while (line != null) {
-        lines = line.split(",");
-        break;
+      String pathToFile = "src/stocksData_csv/daily_"+this.stockSymbol+".csv";
+//      System.out.println(pathToFile);
+    this.setDate(date);
+      BufferedReader reader = null;
+      String line = "";
+//      String[] lines = new String[6];
+      try {
+        reader = new BufferedReader(new FileReader(pathToFile));
+        while ((line = reader.readLine()) != null) {
+          String[] lineArray = line.split(",");
+          if (lineArray[0].equals(this.date)) {
+            try {
+              this.setValueOfShare(lineArray[4]);
+            } catch (NumberFormatException e) {
+              System.out.println(e.getMessage());
+            }
+          }
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        try {
+          if (reader != null) {
+            reader.close();
+          }
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
       }
-      this.setPurchaseDate(lines[0]);
-      this.setValueOfShare(lines[4]);
-    } catch (IOException e) {
-      throw new IllegalArgumentException("No price data found for " + this.stockSymbol);
-    }
   }
 
   String getTicker(){
@@ -90,16 +74,19 @@ public class Stocks {
   int getNumberOfShares(){
     return this.numberOfShares;
   }
+  String getValueOfShare(){
+    return this.valueOfShare;
+  }
+
+  String getDate() {return this.date;}
 
   private void setValueOfShare(String value){
     this.valueOfShare = value;
   }
 
-  private void setPurchaseDate(String date){
-    this.purchaseDate = date;
+  private void setDate(String date){
+    this.date = date;
   }
 
-  String getValueOfShare(){
-    return this.valueOfShare;
-  }
+
 }

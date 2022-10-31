@@ -49,7 +49,11 @@ public class ControllerImpl implements Controller{
       View view = new ViewImpl();
       view.showStockOptions();
       int stockChoice = scan.nextInt();
-      int numberOfShares = scan.nextInt();
+      int numberOfShares = 0;
+      if(stockChoice != 6){
+        view.showNumberOfSharesMessage();
+        numberOfShares = scan.nextInt();
+      }
       switch(stockChoice){
         case 1: {
           Stocks s = new Stocks(stockTicker.MSFT, numberOfShares);
@@ -72,9 +76,13 @@ public class ControllerImpl implements Controller{
         }
         break;
         case 5: {
-          run = false;
+          Stocks s = new Stocks(stockTicker.MS, numberOfShares);
+          stocks.add(s);
         }
         break;
+        case 6: {
+          run = false;
+        }
       }
     }
       return stocks;
