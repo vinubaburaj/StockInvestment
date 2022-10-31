@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>Trial2</Portfolio-Name>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Shares-owned>5</Shares-owned>
+        <Price>235.8700</Price>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>GOOGL</Stock-ticker>
+        <Shares-owned>10</Shares-owned>
+        <Price>96.2900</Price>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>AAPL</Stock-ticker>
+        <Shares-owned>15</Shares-owned>
+        <Price>155.7400</Price>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>IBM</Stock-ticker>
+        <Shares-owned>20</Shares-owned>
+        <Price>138.5100</Price>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MS</Stock-ticker>
+        <Shares-owned>25</Shares-owned>
+        <Price>82.2200</Price>
+    </Stock>
+</Portfolio>
