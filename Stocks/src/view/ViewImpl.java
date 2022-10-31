@@ -1,6 +1,7 @@
 package view;
 
-import java.util.Scanner;
+import enums.stockTicker;
+
 
 public class ViewImpl implements View {
   @Override
@@ -24,5 +25,15 @@ public class ViewImpl implements View {
   @Override
   public void viewPortfolio() {
 
+  }
+  @Override
+  public void showStockOptions(){
+    int i=1;
+    System.out.println("Choose a stock number from the following, after which" +
+            " enter the number of shares needed");
+      for(stockTicker st : stockTicker.values()){
+        System.out.println(i++ + ". " + st.getStockName());
+      }
+      System.out.println(i + ". " + "Finished adding stocks, create portfolio now.");
   }
 }
