@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>p1</Portfolio-Name>
+    <Stock>
+        <Date>2022-10-30</Date>
+        <Stock-ticker>IBM</Stock-ticker>
+        <Shares-owned>3</Shares-owned>
+        <Price>138.5100</Price>
+    </Stock>
+    <Stock>
+        <Date>2022-10-30</Date>
+        <Stock-ticker>GPV.TRV</Stock-ticker>
+        <Shares-owned>3</Shares-owned>
+        <Price>3.2700</Price>
+    </Stock>
+</Portfolio>

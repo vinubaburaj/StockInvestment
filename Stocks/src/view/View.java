@@ -19,4 +19,9 @@ public interface View {
    * Method that displays a particular portfolio of a user.
    */
   void viewPortfolio();
+
+  /**
+   * Method that shows the options of stocks available in this program.
+   */
+  void showStockOptions();
 }
