@@ -103,49 +103,42 @@ public class PortfolioImpl implements Portfolio{
       root.appendChild(name);
 
       for(Stocks stock : stocks){
-        
-      }
+        stock.fetchStockData();
 
-      for (Map.Entry<String, Integer> entry : portfolio.entrySet()) {
-        String ticker = entry.getKey();
-        int num = entry.getValue();
 
-        String[] stockData = getStockData(ticker, null);
-
-        if(stockData.length > 0){
           //create stock
-          Element stock = doc.createElement("Stock");
+          Element stockElement = doc.createElement("Stock");
 
           Element dateElem = doc.createElement("Date");
           Text dateText = doc.createTextNode(date);
           dateElem.appendChild(dateText);
 
           Element stockTicker = doc.createElement("Stock-ticker");
-          Text stockTickerText = doc.createTextNode(ticker);
+          Text stockTickerText = doc.createTextNode(stock.getTicker());
           stockTicker.appendChild(stockTickerText);
 
           Element sharesOwned = doc.createElement("Shares-owned");
-          Text sharesOwnedText = doc.createTextNode(String.valueOf(num));
+          Text sharesOwnedText = doc.createTextNode(String.valueOf(stock.getNumberOfShares()));
           sharesOwned.appendChild(sharesOwnedText);
 
           Element price = doc.createElement("Price");
-          Text priceText = doc.createTextNode(stockData[4]);
+          Text priceText = doc.createTextNode(stock.getValueOfShare());
           price.appendChild(priceText);
 
-          stock.appendChild(dateElem);
-          stock.appendChild(stockTicker);
-          stock.appendChild(sharesOwned);
-          stock.appendChild(price);
+        stockElement.appendChild(dateElem);
+        stockElement.appendChild(stockTicker);
+        stockElement.appendChild(sharesOwned);
+        stockElement.appendChild(price);
 
-          root.appendChild(stock);
-        }
+          root.appendChild(stockElement);
+
       }
 
       doc.appendChild(root);
 
       DOMSource source = new DOMSource(doc);
 
-      String path = "src\\" + userName + "_" + uniqueID + "_" + portfolioName;
+      String path = "src\\" + portfolioName;
       File f = new File(path);
       Result result = new StreamResult(f);
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
