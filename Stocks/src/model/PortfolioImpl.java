@@ -8,16 +8,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +29,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import enums.stockTicker;
 
 
 public class PortfolioImpl implements Portfolio{
@@ -240,16 +236,18 @@ public class PortfolioImpl implements Portfolio{
 
 
 
-  public void examinePortfolio(String userName, String uniqueID, String portfolioName){
-    String path = "src\\" + userName + "_" + uniqueID + "_" + portfolioName;
+  public List<String[]> examinePortfolio(String portfolioName){
+    String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName;
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+    List<String[]> stocks = new ArrayList<>();
 
     try {
 
       // optional, but recommended
       // process XML securely, avoid attacks like XML External Entities (XXE)
-      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+//      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
       // parse XML file
       DocumentBuilder db = dbf.newDocumentBuilder();
@@ -258,9 +256,10 @@ public class PortfolioImpl implements Portfolio{
 
       doc.getDocumentElement().normalize();
 
-      System.out.println("Displaying stocks from " + portfolioName);
+//      System.out.println("Displaying stocks from " + portfolioName);
 
       NodeList list = doc.getElementsByTagName("Stock");
+
 
       for (int temp = 0; temp < list.getLength(); temp++) {
 
@@ -272,15 +271,24 @@ public class PortfolioImpl implements Portfolio{
 
           // get text
           String ticker = element.getElementsByTagName("Stock-ticker").item(0).getTextContent();
-          String number = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
-          String price = element.getElementsByTagName("Price").item(0).getTextContent();
+          stockTicker st = stockTicker.valueOf(ticker);
+          String numberOfShares = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
+          String valueOfShare = element.getElementsByTagName("Price").item(0).getTextContent();
           String date = element.getElementsByTagName("Date").item(0).getTextContent();
 
+          String[] stock = new String[4];
 
-          System.out.println("STOCK NAME : " + ticker);
-          System.out.println("Date : " + date);
-          System.out.println("Number of shares owned : " + number);
-          System.out.println("Price on " + date + " : " + price);
+          stock[0] = st.getStockName();
+          stock[1] = numberOfShares;
+          stock[2] = valueOfShare;
+          stock[3] = date;
+
+          stocks.add(stock);
+
+//          System.out.println("STOCK NAME : " + st.getStockName());
+//          System.out.println("Date : " + date);
+//          System.out.println("Number of shares owned : " + number);
+//          System.out.println("Price on " + date + " : " + price);
 
         }
       }
@@ -288,6 +296,7 @@ public class PortfolioImpl implements Portfolio{
     } catch (ParserConfigurationException | SAXException | IOException e) {
       e.printStackTrace();
     }
+    return stocks;
   }
 
 

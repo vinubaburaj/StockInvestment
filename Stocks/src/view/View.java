@@ -1,5 +1,7 @@
 package view;
 
+import java.util.List;
+
 /**
  * Interface that handles the view of the program.
  * Displays the options available and the results to the user.
@@ -30,4 +32,6 @@ public interface View {
    * of shares to be bought.
    */
   void showNumberOfSharesMessage();
+
+  void showPortfolio(List<String[]> stocks);
 }

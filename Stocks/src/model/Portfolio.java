@@ -7,7 +7,7 @@ public interface Portfolio {
 //  void createPortfolio(String userName, String uniqueID, String portfolioName, Map<String, Integer> portfolio);
 
   void createPortfolio(List<Stocks> stocks, String portfolioName);
-  void examinePortfolio(String userName, String uniqueID, String portfolioName);
+  List<String[]> examinePortfolio(String portfolioName);
 
   void getTotalValue(String userName, String uniqueID, String portfolioName, String date);
 }
