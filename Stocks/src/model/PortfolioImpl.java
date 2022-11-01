@@ -117,14 +117,14 @@ public class PortfolioImpl implements Portfolio {
         Text sharesOwnedText = doc.createTextNode(String.valueOf(stock.getNumberOfShares()));
         sharesOwned.appendChild(sharesOwnedText);
 
-        Element price = doc.createElement("Price");
-        Text priceText = doc.createTextNode(stock.getValueOfShare());
-        price.appendChild(priceText);
+//        Element price = doc.createElement("Price");
+//        Text priceText = doc.createTextNode(stock.getValueOfShare());
+//        price.appendChild(priceText);
 
         stockElement.appendChild(dateElem);
         stockElement.appendChild(stockTicker);
         stockElement.appendChild(sharesOwned);
-        stockElement.appendChild(price);
+//        stockElement.appendChild(price);
 
         root.appendChild(stockElement);
 
@@ -134,7 +134,7 @@ public class PortfolioImpl implements Portfolio {
 
       DOMSource source = new DOMSource(doc);
 
-      String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName;
+      String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
       File f = new File(path);
       Result result = new StreamResult(f);
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -240,11 +240,14 @@ public class PortfolioImpl implements Portfolio {
 
 
   public List<String[]> examinePortfolio(String portfolioName) {
-    String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName;
+    String path = "src/allUserPortfolios/user1_portfolios/"
+            + portfolioName + ".xml";
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
     List<String[]> stocks = new ArrayList<>();
+
+    List<Stocks[]> stocks1  = new ArrayList<>();
 
     try {
 
@@ -272,19 +275,24 @@ public class PortfolioImpl implements Portfolio {
 
           Element element = (Element) node;
 
+
+
           // get text
           String ticker = element.getElementsByTagName("Stock-ticker").item(0).getTextContent();
-          stockTicker st = stockTicker.valueOf(ticker);
+          stockTicker stockTickerVal = stockTicker.valueOf(ticker);
           String numberOfShares = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
-          String valueOfShare = element.getElementsByTagName("Price").item(0).getTextContent();
+//          String valueOfShare = element.getElementsByTagName("Price").item(0).getTextContent();
           String date = element.getElementsByTagName("Date").item(0).getTextContent();
+
+          Stocks s = new Stocks(stockTickerVal, Integer.parseInt(numberOfShares));
+          s.fillStockData(date);
 
           String[] stock = new String[5];
 
-          stock[0] = String.valueOf(st);
-          stock[1] = st.getStockName();
+          stock[0] = String.valueOf(stockTickerVal);
+          stock[1] = stockTickerVal.getStockName();
           stock[2] = numberOfShares;
-          stock[3] = valueOfShare;
+          stock[3] = s.getValueOfShare();
           stock[4] = date;
 
           stocks.add(stock);

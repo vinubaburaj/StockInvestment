@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>Trial6</Portfolio-Name>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Shares-owned>15</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>IBM</Stock-ticker>
+        <Shares-owned>25</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>GOOGL</Stock-ticker>
+        <Shares-owned>40</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>AAPL</Stock-ticker>
+        <Shares-owned>3</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MS</Stock-ticker>
+        <Shares-owned>14</Shares-owned>
+    </Stock>
+</Portfolio>
