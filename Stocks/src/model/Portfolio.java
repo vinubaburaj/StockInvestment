@@ -9,5 +9,5 @@ public interface Portfolio {
   void createPortfolio(List<Stocks> stocks, String portfolioName);
   List<String[]> examinePortfolio(String portfolioName);
 
-  void getTotalValue(String userName, String uniqueID, String portfolioName, String date);
+  Double getTotalValue(List<String[]> stocks, String date);
 }

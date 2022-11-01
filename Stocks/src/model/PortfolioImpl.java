@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter;
 import enums.stockTicker;
 
 
-public class PortfolioImpl implements Portfolio{
+public class PortfolioImpl implements Portfolio {
 
 //
 //  private String[] getStockData(String ticker, String date) {
@@ -99,34 +99,34 @@ public class PortfolioImpl implements Portfolio{
 
       root.appendChild(name);
 
-      for(Stocks stock : stocks){
-        fillStockData(stock, lastDate);
+      for (Stocks stock : stocks) {
+        stock.fillStockData(lastDate);
 
-          //create stock
-          Element stockElement = doc.createElement("Stock");
+        //create stock
+        Element stockElement = doc.createElement("Stock");
 
-          Element dateElem = doc.createElement("Date");
-          Text dateText = doc.createTextNode(stock.getDate());
-          dateElem.appendChild(dateText);
+        Element dateElem = doc.createElement("Date");
+        Text dateText = doc.createTextNode(stock.getDate());
+        dateElem.appendChild(dateText);
 
-          Element stockTicker = doc.createElement("Stock-ticker");
-          Text stockTickerText = doc.createTextNode(stock.getTicker());
-          stockTicker.appendChild(stockTickerText);
+        Element stockTicker = doc.createElement("Stock-ticker");
+        Text stockTickerText = doc.createTextNode(stock.getTicker());
+        stockTicker.appendChild(stockTickerText);
 
-          Element sharesOwned = doc.createElement("Shares-owned");
-          Text sharesOwnedText = doc.createTextNode(String.valueOf(stock.getNumberOfShares()));
-          sharesOwned.appendChild(sharesOwnedText);
+        Element sharesOwned = doc.createElement("Shares-owned");
+        Text sharesOwnedText = doc.createTextNode(String.valueOf(stock.getNumberOfShares()));
+        sharesOwned.appendChild(sharesOwnedText);
 
-          Element price = doc.createElement("Price");
-          Text priceText = doc.createTextNode(stock.getValueOfShare());
-          price.appendChild(priceText);
+        Element price = doc.createElement("Price");
+        Text priceText = doc.createTextNode(stock.getValueOfShare());
+        price.appendChild(priceText);
 
         stockElement.appendChild(dateElem);
         stockElement.appendChild(stockTicker);
         stockElement.appendChild(sharesOwned);
         stockElement.appendChild(price);
 
-          root.appendChild(stockElement);
+        root.appendChild(stockElement);
 
       }
 
@@ -150,9 +150,9 @@ public class PortfolioImpl implements Portfolio{
     }
   }
 
-  public void fillStockData(Stocks stock, String date){
-    stock.fillStockData(date);
-  }
+//  public void fillStockData(Stocks stock, String date){
+//    stock.fillStockData(date);
+//  }
 
 //  private void createXML(String userName, String uniqueID, String portfolioName, Map<String, Integer> portfolio) {
 //    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -239,8 +239,7 @@ public class PortfolioImpl implements Portfolio{
 //  }
 
 
-
-  public List<String[]> examinePortfolio(String portfolioName){
+  public List<String[]> examinePortfolio(String portfolioName) {
     String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName;
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -305,46 +304,62 @@ public class PortfolioImpl implements Portfolio{
   }
 
 
-  public void getTotalValue(String userName, String uniqueID, String portfolioName, String date){
-    String path = "src\\" + userName + "_" + uniqueID + "_" + portfolioName;
+  public Double getTotalValue(List<String[]> stocks, String date){
 
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  double totalValue = 0;
 
-    try {
+    for(
+  String[] stock :stocks)
+
+  {
+
+    Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
+    s.fillStockData(date);
+    totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
+
+  }
+    return totalValue;
+}
+
+
+//    String path = "src\\" + userName + "_" + uniqueID + "_" + portfolioName;
+//
+//    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//
+//    try {
 
       // optional, but recommended
       // process XML securely, avoid attacks like XML External Entities (XXE)
-      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-
-      // parse XML file
-      DocumentBuilder db = dbf.newDocumentBuilder();
-
-      Document doc = db.parse(new File(path));
-
-      doc.getDocumentElement().normalize();
-
-      NodeList list = doc.getElementsByTagName("Stock");
-
-      for (int temp = 0; temp < list.getLength(); temp++) {
-
-        Node node = list.item(temp);
-
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-
-          Element element = (Element) node;
-
-          // get text
-          String ticker = element.getElementsByTagName("Stock-ticker").item(0).getTextContent();
-          String number = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
-          String price = element.getElementsByTagName("Price").item(0).getTextContent();
-
-//          String[] stockData =  getStockData(ticker, date);
-        }
-      }
-
-    } catch (ParserConfigurationException | SAXException | IOException e) {
-      e.printStackTrace();
-    }
-  }
+//      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+//
+//      // parse XML file
+//      DocumentBuilder db = dbf.newDocumentBuilder();
+//
+//      Document doc = db.parse(new File(path));
+//
+//      doc.getDocumentElement().normalize();
+//
+//      NodeList list = doc.getElementsByTagName("Stock");
+//
+//      for (int temp = 0; temp < list.getLength(); temp++) {
+//
+//        Node node = list.item(temp);
+//
+//        if (node.getNodeType() == Node.ELEMENT_NODE) {
+//
+//          Element element = (Element) node;
+//
+//          // get text
+//          String ticker = element.getElementsByTagName("Stock-ticker").item(0).getTextContent();
+//          String number = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
+//          String price = element.getElementsByTagName("Price").item(0).getTextContent();
+//
+////          String[] stockData =  getStockData(ticker, date);
+//        }
+//      }
+//
+//    } catch (ParserConfigurationException | SAXException | IOException e) {
+//      e.printStackTrace();
+//    }
 
 }
