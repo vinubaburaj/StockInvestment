@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>manualxml</Portfolio-Name>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Shares-owned>15</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>IBM</Stock-ticker>
+        <Shares-owned>13</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>GOOGL</Stock-ticker>
+        <Shares-owned>20</Shares-owned>
+    </Stock>
+	<Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>AAPL</Stock-ticker>
+        <Shares-owned>25</Shares-owned>
+    </Stock>
+</Portfolio>

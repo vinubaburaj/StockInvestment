@@ -123,7 +123,8 @@ public class ControllerImpl implements Controller{
   }
 
   private boolean checkFileExists(String portfolioName){
-    File filePath = new File("src/allUserPortfolios/user1_portfolios/" + portfolioName);
+    File filePath = new File("src/allUserPortfolios/user1_portfolios/"
+            + portfolioName+".xml");
     return filePath.exists();
   }
 

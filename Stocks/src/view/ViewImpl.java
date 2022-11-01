@@ -70,7 +70,7 @@ public class ViewImpl implements View {
 
   @Override
   public void showTotalValue(String portfolioName,String date, Double totalValue) {
-    System.out.println("Total value of portfolio: " + portfolioName
-            + " on " + date + " is " + totalValue);
+    System.out.println("Total value of portfolio " + portfolioName
+            + " on " + date + " is: " + totalValue);
   }
 }
