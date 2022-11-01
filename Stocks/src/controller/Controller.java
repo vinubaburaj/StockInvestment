@@ -9,5 +9,5 @@ public interface Controller {
    * Method that starts the operation of the Stocks program
    * from the controller.
    */
-  void start();
+  void start() throws IllegalArgumentException;
 }
