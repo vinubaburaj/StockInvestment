@@ -33,5 +33,34 @@ public interface View {
    */
   void showNumberOfSharesMessage();
 
+  /**
+   * Displays the contents of a portfolio.
+   * Portfolio data is received as a list of string array.
+   * Each String array contains the following information on its indices
+   * [0] - Name of the stock.
+   * [1] - Number of shares purchased.
+   * [2] - Value of a share when purchased.
+   * [3] - Date when share was purchased.
+   *
+   * @param stocks list of stocks contained in the portfolio.
+   */
   void showPortfolio(List<String[]> stocks);
+
+  /**
+   * Method to intimate user to enter portfolio name
+   * which is to be scanned for further operations.
+   */
+  void inputPortfolioName();
+
+  /**
+   * Method to intimate user to enter the date for
+   * which they want to find the value of a portfolio.
+   */
+  void inputDate();
+
+  /**
+   * Method to display the total value of a portfolio
+   * on a particular date to the user.
+   */
+  void showTotalValue(String portfolioName, String date, Double totalValue);
 }

@@ -100,7 +100,7 @@ public class PortfolioImpl implements Portfolio{
       root.appendChild(name);
 
       for(Stocks stock : stocks){
-        stock.fillStockData(lastDate);
+        fillStockData(stock, lastDate);
 
           //create stock
           Element stockElement = doc.createElement("Stock");
@@ -148,6 +148,10 @@ public class PortfolioImpl implements Portfolio{
     } catch (TransformerException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void fillStockData(Stocks stock, String date){
+    stock.fillStockData(date);
   }
 
 //  private void createXML(String userName, String uniqueID, String portfolioName, Map<String, Integer> portfolio) {
@@ -276,12 +280,13 @@ public class PortfolioImpl implements Portfolio{
           String valueOfShare = element.getElementsByTagName("Price").item(0).getTextContent();
           String date = element.getElementsByTagName("Date").item(0).getTextContent();
 
-          String[] stock = new String[4];
+          String[] stock = new String[5];
 
-          stock[0] = st.getStockName();
-          stock[1] = numberOfShares;
-          stock[2] = valueOfShare;
-          stock[3] = date;
+          stock[0] = String.valueOf(st);
+          stock[1] = st.getStockName();
+          stock[2] = numberOfShares;
+          stock[3] = valueOfShare;
+          stock[4] = date;
 
           stocks.add(stock);
 

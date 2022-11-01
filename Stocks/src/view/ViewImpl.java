@@ -13,7 +13,7 @@ public class ViewImpl implements View {
     System.out.println(
              "1. Create a portfolio. \n"
             + "2. View composition of a portfolio. \n"
-            + "3. View a portfolio. \n"
+            + "3. Get total value of a portfolio on a specified date. \n"
             + "\n"
             + "Choose an option number: "
     );
@@ -50,10 +50,27 @@ public class ViewImpl implements View {
   public void showPortfolio(List<String[]> stocks) {
     System.out.println("Portfolio contains the following stocks and its details: \n");
     for(String[] stock : stocks){
-      System.out.println("Stock Name: " + stock[0]  + "\n"
-              + "Number of shares purchased: " + stock[1] + "\n"
-              + "Value purchased at: " + stock[2] + "\n"
-              + "Date purchased on: " + stock[3] + "\n");
+      System.out.println("Stock Name: " + stock[1]  + "\n"
+              + "Number of shares purchased: " + stock[2] + "\n"
+              + "Value purchased at: " + stock[3] + "\n"
+              + "Date purchased on: " + stock[4] + "\n");
     }
+  }
+
+  @Override
+  public void inputPortfolioName() {
+    System.out.println("Enter the name of portfolio: ");
+  }
+
+  @Override
+  public void inputDate(){
+    System.out.println("Enter the date in YYYY-MM-DD format for which "
+            + "you want to calculate the total value of the portfolio.");
+  }
+
+  @Override
+  public void showTotalValue(String portfolioName,String date, Double totalValue) {
+    System.out.println("Total value of portfolio: " + portfolioName
+            + " on " + date + " is " + totalValue);
   }
 }

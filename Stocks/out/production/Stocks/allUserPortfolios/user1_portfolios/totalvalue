@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>totalvalue</Portfolio-Name>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Shares-owned>10</Shares-owned>
+        <Price>235.8700</Price>
+    </Stock>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>GOOGL</Stock-ticker>
+        <Shares-owned>10</Shares-owned>
+        <Price>96.2900</Price>
+    </Stock>
+</Portfolio>

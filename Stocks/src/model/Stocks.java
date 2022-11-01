@@ -67,18 +67,18 @@ public class Stocks {
       }
   }
 
-  String getTicker(){
+  public String getTicker(){
     return this.stockSymbol.toString();
   }
 
-  int getNumberOfShares(){
+  public int getNumberOfShares(){
     return this.numberOfShares;
   }
-  String getValueOfShare(){
+  public String getValueOfShare(){
     return this.valueOfShare;
   }
 
-  String getDate() {return this.date;}
+  public String getDate() {return this.date;}
 
   private void setValueOfShare(String value){
     this.valueOfShare = value;
