@@ -1,5 +1,6 @@
 package view;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -63,4 +64,13 @@ public interface View {
    * on a particular date to the user.
    */
   void showTotalValue(String portfolioName, String date, Double totalValue);
+
+  /**
+   * Method that intimates the user to display a valid date
+   * between the two LocalDate values provided.
+   * @param dateToday most recent local date user can provide.
+   * @param lastHistoricDate oldest date user can provide.
+   */
+  void showInvalidDateMessage(LocalDate dateToday,
+                                      LocalDate lastHistoricDate);
 }

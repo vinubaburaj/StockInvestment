@@ -2,6 +2,9 @@ package controller;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +21,9 @@ import enums.stockTicker;
 public class ControllerImpl implements Controller{
   final InputStream in;
   final PrintStream out;
+
+  private static final LocalDate dateToday = LocalDate.parse("2022-10-28");
+  private static final LocalDate lastHistoricDate = LocalDate.parse("2022-06-08");
   public ControllerImpl(InputStream in, PrintStream out){
     this.in = in;
     this.out = out;
@@ -138,21 +144,54 @@ public class ControllerImpl implements Controller{
   }
 
   private void getTotalPortfolioValueController(String portfolioName, String date) {
-    Portfolio portfolio = new PortfolioImpl();
-    List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
-    Double totalValue = portfolio.getTotalValue(stocks, date);
+    boolean isValidDate = checkDateValidity(date);
     View view = new ViewImpl();
-    view.showTotalValue(portfolioName, date, totalValue);
+    if(isValidDate){
+      String getDateToSearch = getDateToLook(date);
+      Portfolio portfolio = new PortfolioImpl();
+      List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
+      Double totalValue = portfolio.getTotalValue(stocks, getDateToSearch);
+
+      view.showTotalValue(portfolioName, getDateToSearch, totalValue);
+    }
+    else{
+      view.showInvalidDateMessage(dateToday, lastHistoricDate);
+//      System.out.println("Please enter a valid date YYYY-MM-DD between " + dateToday
+//              + " and " + lastHistoricDate);
+    }
   }
-//    double totalValue = 0;
-//
-//    for(String[] stock : stocks){
-//
-//      Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
-//      ((PortfolioImpl) portfolio).fillStockData(s, date);
-//      totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
-//
-//    }
+
+
+  private static boolean checkDateValidity(String date) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
+    try {
+      format.parse(date);
+    } catch (ParseException e) {
+      return false;
+    }
+    LocalDate dateCur = LocalDate.parse(date);
+    int compareDateToToday = dateCur.compareTo(dateToday);
+    int compareDateToLast = dateCur.compareTo(lastHistoricDate);
+    if (compareDateToLast > 0 && compareDateToToday <= 0) {
+      return true;
+    }
+    return false;
+  }
+
+  private static String getDateToLook(String date) {
+    LocalDate dateCur = LocalDate.parse(date);
+
+    if ("SUNDAY".equals(dateCur.getDayOfWeek().toString())) {
+      System.out.println(String.valueOf(dateCur.minusDays(2)));
+      return String.valueOf(dateCur.minusDays(2));
+    } else if ("SATURDAY".equals(dateCur.getDayOfWeek().toString())) {
+      System.out.println(String.valueOf(dateCur.minusDays(1)));
+      return String.valueOf(dateCur.minusDays(1));
+    } else {
+      return date;
+    }
+  }
 
 
 }

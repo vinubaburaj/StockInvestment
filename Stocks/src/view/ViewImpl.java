@@ -1,5 +1,6 @@
 package view;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import enums.stockTicker;
@@ -72,5 +73,12 @@ public class ViewImpl implements View {
   public void showTotalValue(String portfolioName,String date, Double totalValue) {
     System.out.println("Total value of portfolio " + portfolioName
             + " on " + date + " is: " + totalValue);
+  }
+
+  @Override
+  public  void showInvalidDateMessage(LocalDate dateToday,
+                                            LocalDate lastHistoricDate){
+    System.out.println("Please enter a valid date in YYYY-MM-DD format between "
+            + lastHistoricDate + " and " + dateToday);
   }
 }
