@@ -136,23 +136,22 @@ public class ControllerImpl implements Controller{
 
   }
 
-  private void getTotalPortfolioValueController(String portfolioName, String date){
+  private void getTotalPortfolioValueController(String portfolioName, String date) {
     Portfolio portfolio = new PortfolioImpl();
     List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
-    double totalValue = 0;
-    for(String[] stock : stocks){
-
-//      stockTicker st = new stockTicker("Microsoft");
-//      System.out.println("Here");
-//      stockTicker st = stockTicker.valueOf("MSFT");
-//      System.out.println("Enum val: " + st.getClass().getSimpleName());
-//      System.out.println("Enum printing: " + st);
-
-      Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
-      ((PortfolioImpl) portfolio).fillStockData(s, date);
-      totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
-    }
+    Double totalValue = portfolio.getTotalValue(stocks, date);
     View view = new ViewImpl();
     view.showTotalValue(portfolioName, date, totalValue);
   }
+//    double totalValue = 0;
+//
+//    for(String[] stock : stocks){
+//
+//      Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
+//      ((PortfolioImpl) portfolio).fillStockData(s, date);
+//      totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
+//
+//    }
+
+
 }
