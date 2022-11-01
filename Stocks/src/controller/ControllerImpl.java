@@ -29,33 +29,48 @@ public class ControllerImpl implements Controller{
     view.showMenu();
     Scanner scan = new Scanner(this.in);
     int choice = scan.nextInt();
-    switch(choice){
+    switch(choice) {
       case 1: {
-        System.out.println("Enter new portfolio name:");
+        view.inputPortfolioName();
+//        System.out.println("Enter new portfolio name:");
         String portfolioName = scan.next();
         List<Stocks> stocks = createPortfolioController();
         Portfolio portfolio = new PortfolioImpl();
-        portfolio.createPortfolio(stocks,portfolioName);
+        portfolio.createPortfolio(stocks, portfolioName);
       }
-        break;
+      break;
 
       case 2: {
-        System.out.println("Enter the name of portfolio to fetch:");
+        view.inputPortfolioName();
+//        System.out.println("Enter the name of portfolio to fetch:");
         String portfolioName = scan.next();
-        try {
           if (!checkFileExists(portfolioName)) {
             throw new IllegalArgumentException("Portfolio name: "
                     + portfolioName + " doesn't exist");
           }
+
           examinePortfolioController(portfolioName);
+        break;
+      }
+
+      case 3: {
+        view.inputPortfolioName();
+        String portfolioName = scan.next();
+        if (!checkFileExists(portfolioName)) {
+          throw new IllegalArgumentException("Portfolio name: "
+                  + portfolioName + " doesn't exist");
         }
-          catch(Exception e){
-          System.out.println(e.getMessage());
-          }
-
+        view.inputDate();
+        String date = scan.next();
+        getTotalPortfolioValueController(portfolioName, date);
+        break;
       }
 
+      default: {
+        throw new IllegalArgumentException("Invalid option chosen.");
       }
+    }
+
 //    char choice = scan.next().CharAt(0);
 //    this.out.println("Option chosen: " + option);
   }
@@ -119,5 +134,25 @@ public class ControllerImpl implements Controller{
     View view = new ViewImpl();
     view.showPortfolio(stocks);
 
+  }
+
+  private void getTotalPortfolioValueController(String portfolioName, String date){
+    Portfolio portfolio = new PortfolioImpl();
+    List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
+    double totalValue = 0;
+    for(String[] stock : stocks){
+
+//      stockTicker st = new stockTicker("Microsoft");
+//      System.out.println("Here");
+//      stockTicker st = stockTicker.valueOf("MSFT");
+//      System.out.println("Enum val: " + st.getClass().getSimpleName());
+//      System.out.println("Enum printing: " + st);
+
+      Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
+      ((PortfolioImpl) portfolio).fillStockData(s, date);
+      totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
+    }
+    View view = new ViewImpl();
+    view.showTotalValue(portfolioName, date, totalValue);
   }
 }
