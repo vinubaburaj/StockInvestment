@@ -68,9 +68,22 @@ public interface View {
   /**
    * Method that intimates the user to display a valid date
    * between the two LocalDate values provided.
-   * @param dateToday most recent local date user can provide.
+   *
+   * @param dateToday        most recent local date user can provide.
    * @param lastHistoricDate oldest date user can provide.
    */
   void showInvalidDateMessage(LocalDate dateToday,
-                                      LocalDate lastHistoricDate);
+                              LocalDate lastHistoricDate);
+
+  /**
+   * Method that intimates the user that a portfolio has been
+   * successfully created.
+   */
+  void createSuccessfulMessage();
+
+  /**
+   * Method that intimates the user when a portfolio
+   * could not be created.
+   */
+  void createUnsuccessfullMessage();
 }

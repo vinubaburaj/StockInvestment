@@ -32,67 +32,106 @@ public class ControllerImpl implements Controller{
   @Override
   public void start() throws IllegalArgumentException{
     View view = new ViewImpl();
-    view.showMenu();
-    Scanner scan = new Scanner(this.in);
-    int choice = scan.nextInt();
-    switch(choice) {
-      case 1: {
-        view.inputPortfolioName();
-//        System.out.println("Enter new portfolio name:");
-        String portfolioName = scan.next();
-        List<Stocks> stocks = createPortfolioController();
-        Portfolio portfolio = new PortfolioImpl();
-        portfolio.createPortfolio(stocks, portfolioName);
+    boolean run = true;
+    while(run) {
+      view.showMenu();
+      Scanner scan = new Scanner(this.in);
+      int choice;
+      try {
+        String stringChoice = scan.nextLine();
+        choice = Integer.parseInt(stringChoice);
+      } catch (Exception e) {
+        throw new IllegalArgumentException("Invalid entry. Please choose "
+                + "a number to enter your choice.");
       }
-      break;
+      switch (choice) {
+        case 1: {
+          view.inputPortfolioName();
+          String portfolioName = scan.nextLine();
+          if (checkFileExists(portfolioName)) {
+            throw new IllegalArgumentException("Portfolio with name "
+                    + "already exists. Please choose another name.");
+          }
+          List<Stocks> stocks = createPortfolioController();
+          if(stocks.size() > 0) {
+            Portfolio portfolio = new PortfolioImpl();
+            portfolio.createPortfolio(stocks, portfolioName);
+            view.createSuccessfulMessage();
+          }
+          else{
+            view.createUnsuccessfullMessage();
+          }
+        }
+        break;
 
-      case 2: {
-        view.inputPortfolioName();
-//        System.out.println("Enter the name of portfolio to fetch:");
-        String portfolioName = scan.next();
+        case 2: {
+          view.inputPortfolioName();
+          String portfolioName = scan.next();
+          if (!checkFileExists(portfolioName)) {
+            throw new IllegalArgumentException("Portfolio with name "
+                    + portfolioName + " doesn't exist");
+          }
+          examinePortfolioController(portfolioName);
+          break;
+        }
+
+        case 3: {
+          view.inputPortfolioName();
+          String portfolioName = scan.next();
           if (!checkFileExists(portfolioName)) {
             throw new IllegalArgumentException("Portfolio name: "
                     + portfolioName + " doesn't exist");
           }
-
-          examinePortfolioController(portfolioName);
-        break;
-      }
-
-      case 3: {
-        view.inputPortfolioName();
-        String portfolioName = scan.next();
-        if (!checkFileExists(portfolioName)) {
-          throw new IllegalArgumentException("Portfolio name: "
-                  + portfolioName + " doesn't exist");
+          view.inputDate();
+          String date = scan.next();
+          getTotalPortfolioValueController(portfolioName, date);
+          break;
         }
-        view.inputDate();
-        String date = scan.next();
-        getTotalPortfolioValueController(portfolioName, date);
-        break;
-      }
 
-      default: {
-        throw new IllegalArgumentException("Invalid option chosen.");
+        case 4: {
+          run = false;
+          break;
+        }
+
+        default: {
+          throw new IllegalArgumentException("Invalid number entered. "
+                  + "Please enter a number from the choices provided.");
+        }
       }
     }
 
-//    char choice = scan.next().CharAt(0);
-//    this.out.println("Option chosen: " + option);
   }
 
-  private List<Stocks> createPortfolioController(){
+  private List<Stocks> createPortfolioController() throws IllegalArgumentException{
     boolean run = true;
     Scanner scan = new Scanner(this.in);
     List<Stocks> stocks = new ArrayList<>();
     while(run){
       View view = new ViewImpl();
       view.showStockOptions();
-      int stockChoice = scan.nextInt();
+      int stockChoice;
+      String stringStockChoice = scan.nextLine();
+      try{
+        stockChoice = Integer.parseInt(stringStockChoice);
+      }
+      catch(Exception e){
+        throw new IllegalArgumentException("Invalid entry for stock choice. "
+                + "Please provide a number from the options given.");
+      }
+//      stockChoice = scan.nextInt();
       int numberOfShares = 0;
-      if(stockChoice != 6){
+      if(stockChoice < 6 && stockChoice > 1){
         view.showNumberOfSharesMessage();
-        numberOfShares = scan.nextInt();
+        String stringNumberOfShares = scan.nextLine();
+        try{
+          numberOfShares = Integer.parseInt(stringNumberOfShares);
+        }
+        catch(Exception e){
+          throw new IllegalArgumentException("Invalid entry for number of "
+                  + "shares. Please enter a whole number value of number of "
+                  + "shares to be bought");
+        }
+//        numberOfShares = scan.nextInt();
       }
       switch(stockChoice){
         case 1: {
@@ -122,6 +161,11 @@ public class ControllerImpl implements Controller{
         break;
         case 6: {
           run = false;
+          break;
+        }
+        default: {
+          throw new IllegalArgumentException("Invalid number entered. "
+                  + "Please enter a number from the choices provided.");
         }
       }
     }
@@ -156,8 +200,6 @@ public class ControllerImpl implements Controller{
     }
     else{
       view.showInvalidDateMessage(dateToday, lastHistoricDate);
-//      System.out.println("Please enter a valid date YYYY-MM-DD between " + dateToday
-//              + " and " + lastHistoricDate);
     }
   }
 
@@ -173,10 +215,7 @@ public class ControllerImpl implements Controller{
     LocalDate dateCur = LocalDate.parse(date);
     int compareDateToToday = dateCur.compareTo(dateToday);
     int compareDateToLast = dateCur.compareTo(lastHistoricDate);
-    if (compareDateToLast > 0 && compareDateToToday <= 0) {
-      return true;
-    }
-    return false;
+    return compareDateToLast > 0 && compareDateToToday <= 0;
   }
 
   private static String getDateToLook(String date) {

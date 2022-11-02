@@ -142,7 +142,7 @@ public class PortfolioImpl implements Portfolio {
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.transform(source, result);
-      System.out.println("Written data!" + path);
+//      System.out.println("Written data!" + path);
     } catch (ParserConfigurationException ex) {
       Logger.getLogger(PortfolioImpl.class.getName()).log(Level.SEVERE, null, ex);
     } catch (TransformerException e) {
