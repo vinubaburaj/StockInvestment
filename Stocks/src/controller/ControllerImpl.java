@@ -20,47 +20,51 @@ import model.Portfolio;
 import enums.stockTicker;
 
 
-public class ControllerImpl implements Controller{
+public class ControllerImpl implements Controller {
   final InputStream in;
   final PrintStream out;
 
   private static final LocalDate dateToday = LocalDate.parse("2022-10-28");
   private static final LocalDate lastHistoricDate = LocalDate.parse("2022-06-08");
-  public ControllerImpl(InputStream in, PrintStream out){
+
+  public ControllerImpl(InputStream in, PrintStream out) {
     this.in = in;
     this.out = out;
   }
 
   @Override
-  public void start() throws IllegalArgumentException{
+  public void start() throws IllegalArgumentException {
     View view = new ViewImpl();
     boolean run = true;
-    while(run) {
+    while (run) {
       view.showMenu();
       Scanner scan = new Scanner(this.in);
-      int choice;
+      int choice = 8;
       try {
         String stringChoice = scan.nextLine();
         choice = Integer.parseInt(stringChoice);
       } catch (Exception e) {
-        throw new IllegalArgumentException("Invalid entry. Please choose "
+        view.displayErrorMessage("Invalid entry. Please choose "
                 + "a number to enter your choice.");
+        this.start();
+        return;
       }
       switch (choice) {
         case 1: {
           view.inputPortfolioName();
           String portfolioName = scan.nextLine();
           if (checkFileExists(portfolioName)) {
-            throw new IllegalArgumentException("Portfolio with name "
+            view.displayErrorMessage("Portfolio with name "
                     + "already exists. Please choose another name.");
+            this.start();
+            return ;
           }
           List<Stocks> stocks = createPortfolioController();
-          if(stocks.size() > 0) {
+          if (stocks.size() > 0) {
             Portfolio portfolio = new PortfolioImpl();
             portfolio.createPortfolio(stocks, portfolioName);
             view.createSuccessfulMessage();
-          }
-          else{
+          } else {
             view.createUnsuccessfulMessage();
           }
         }
@@ -70,8 +74,10 @@ public class ControllerImpl implements Controller{
           view.inputPortfolioName();
           String portfolioName = scan.next();
           if (!checkFileExists(portfolioName)) {
-            throw new IllegalArgumentException("Portfolio with name "
+            view.displayErrorMessage("Portfolio with name "
                     + portfolioName + " doesn't exist");
+            this.start();
+            return ;
           }
           examinePortfolioController(portfolioName);
           break;
@@ -81,8 +87,10 @@ public class ControllerImpl implements Controller{
           view.inputPortfolioName();
           String portfolioName = scan.next();
           if (!checkFileExists(portfolioName)) {
-            throw new IllegalArgumentException("Portfolio name: "
+            view.displayErrorMessage("Portfolio name: "
                     + portfolioName + " doesn't exist");
+            this.start();
+            return ;
           }
           view.inputDate();
           String date = scan.next();
@@ -96,8 +104,10 @@ public class ControllerImpl implements Controller{
         }
 
         default: {
-          throw new IllegalArgumentException("Invalid number entered. "
-                  + "Please enter a number from the choices provided.");
+          view.displayErrorMessage("Invalid choice selected. Please choose "
+                  + "an option from the list provided");
+          this.start();
+          return ;
         }
       }
     }
@@ -135,8 +145,7 @@ public class ControllerImpl implements Controller{
         }
         getUniqTicks(uniqueTickers, stockChoice, numberOfShares);
 
-      }
-      else {
+      } else {
         run = false;
 
       }
@@ -150,22 +159,22 @@ public class ControllerImpl implements Controller{
   }
 
   private void getUniqTicks(HashMap<stockTicker,
-          Integer> u, stockTicker ticker, int numOfShares){
-    if(u.containsKey(ticker)) {
+          Integer> u, stockTicker ticker, int numOfShares) {
+    if (u.containsKey(ticker)) {
       int n = u.get(ticker);
       u.put(ticker, n + numOfShares);
-    }else{
+    } else {
       u.put(ticker, numOfShares);
     }
   }
 
-  private boolean checkFileExists(String portfolioName){
+  private boolean checkFileExists(String portfolioName) {
     File filePath = new File("src/allUserPortfolios/user1_portfolios/"
-            + portfolioName+".xml");
+            + portfolioName + ".xml");
     return filePath.exists();
   }
 
-  private void examinePortfolioController(String portfolioName){
+  private void examinePortfolioController(String portfolioName) {
     Portfolio portfolio = new PortfolioImpl();
     List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
 
@@ -177,15 +186,14 @@ public class ControllerImpl implements Controller{
   private void getTotalPortfolioValueController(String portfolioName, String date) {
     boolean isValidDate = checkDateValidity(date);
     View view = new ViewImpl();
-    if(isValidDate){
+    if (isValidDate) {
       String getDateToSearch = getDateToLook(date);
       Portfolio portfolio = new PortfolioImpl();
       List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
       Double totalValue = portfolio.getTotalValue(stocks, getDateToSearch);
 
       view.showTotalValue(portfolioName, getDateToSearch, totalValue);
-    }
-    else{
+    } else {
       view.showInvalidDateMessage(dateToday, lastHistoricDate);
     }
   }

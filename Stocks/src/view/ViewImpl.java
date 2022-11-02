@@ -80,7 +80,12 @@ public class ViewImpl implements View {
   }
 
   @Override
-  public void createUnsuccessfulMessage(){
+  public void createUnsuccessfulMessage() {
     System.out.println("No stocks entered.");
+  }
+
+  @Override
+  public void displayErrorMessage(String error){
+    System.out.println(error);
   }
 }
