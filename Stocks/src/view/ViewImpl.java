@@ -8,84 +8,98 @@ import enums.stockTicker;
 
 public class ViewImpl implements View {
   @Override
-  public void showMenu() {
-
-    System.out.println("\n What are you looking for today? ");
-    System.out.println(
-            "1. Create a portfolio. \n"
-                    + "2. View composition of a portfolio. \n"
-                    + "3. Get total value of a portfolio on a specified date. \n"
-                    + "4. Exit the program \n"
-                    + "\n"
-                    + "Choose an option number: "
-    );
+  public String showMenu() {
+    String s = "\n \n What are you looking for today? \n"
+            + "1. Create a portfolio. \n"
+            + "2. View composition of a portfolio. \n"
+            + "3. Get total value of a portfolio on a specified date. \n"
+            + "4. Exit the program \n"
+            + "\n"
+            + "Choose an option number: ";
+    return s;
   }
 
   @Override
-  public void showStockOptions() {
+  public String showStockOptions() {
     int i = 1;
-    System.out.println("Type the stock TICKER, after which"
-            + " enter the number of shares needed");
+    StringBuilder s = new StringBuilder();
+    s.append("Type the stock TICKER, after which enter the number of shares needed\n") ;
+//    System.out.println("Type the stock TICKER, after which"
+//            + " enter the number of shares needed");
     for (stockTicker st : stockTicker.values()) {
-      System.out.println(i++ + ". " + st.getStockName() + "( Ticker: " + st + ")");
+      s.append(st.getStockName() + "( Ticker: " + st + ") \n");
+//      System.out.println(i++ + ". " + st.getStockName() + "( Ticker: " + st + ")");
     }
-    System.out.println(i + ". " + "Finished adding stocks, create portfolio now. (Type Quit)");
-  }
-
-  public void showNumberOfSharesMessage() {
-    System.out.println("Enter the number of shares you want to buy "
-            + "of this stock: ");
-    System.out.println("(Note: You can only buy whole number amount "
-            + "of shares)");
+    s.append("Finished adding stocks, create portfolio now. (Type Quit)\n");
+//    System.out.println(i + ". " + "Finished adding stocks, create portfolio now. (Type Quit)");
+    return s.toString();
   }
 
   @Override
-  public void showPortfolio(List<String[]> stocks) {
-    System.out.println("Portfolio contains the following stocks and its details: \n");
+  public String showNumberOfSharesMessage() {
+
+    String s = "Enter the number of shares you want to buy of this stock: \n"
+            +" (Note: You can only buy whole number amount of shares) \n";
+//    System.out.println("Enter the number of shares you want to buy "
+//            + "of this stock: ");
+//    System.out.println("(Note: You can only buy whole number amount "
+//            + "of shares)");
+    return s;
+  }
+
+  @Override
+  public String showPortfolio(List<String[]> stocks) {
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Portfolio contains the following stocks and its details: \n");
     for (String[] stock : stocks) {
-      System.out.println("Stock Name: " + stock[1] + "\n"
-              + "Number of shares purchased: " + stock[2] + "\n"
-              + "Value purchased at: " + stock[3] + "\n"
-              + "Date purchased on: " + stock[4] + "\n");
+      sb.append("Stock Name: ").append(stock[1]).append("\n")
+              .append("Number of shares purchased: ").append(stock[2]).append("\n")
+              .append("Value purchased at: ").append(stock[3]).append("\n").
+              append("Date purchased on: ").append(stock[4]).append("\n");
     }
+    return sb.toString();
   }
 
   @Override
-  public void inputPortfolioName() {
-    System.out.println("Enter the name of portfolio: ");
+  public String inputPortfolioName() {
+    return "Enter the name of portfolio: ";
   }
 
   @Override
-  public void inputDate() {
-    System.out.println("Enter the date in YYYY-MM-DD format for which "
-            + "you want to calculate the total value of the portfolio.");
+  public String inputDate() {
+    return "Enter the date in YYYY-MM-DD format for which "
+            + "you want to calculate the total value of the portfolio.";
   }
 
   @Override
-  public void showTotalValue(String portfolioName, String date, Double totalValue) {
-    System.out.println("Total value of portfolio " + portfolioName
-            + " on " + date + " is: " + totalValue);
+  public String showTotalValue(String portfolioName, String date, Double totalValue) {
+    return "Total value of portfolio " + portfolioName
+            + " on " + date + " is: " + totalValue;
   }
 
   @Override
-  public void showInvalidDateMessage(LocalDate dateToday,
+  public String showInvalidDateMessage(LocalDate dateToday,
                                      LocalDate lastHistoricDate) {
-    System.out.println("Please enter a valid date in YYYY-MM-DD format between "
-            + lastHistoricDate + " and " + dateToday);
+    return "Please enter a valid date in YYYY-MM-DD format between "
+            + lastHistoricDate + " and " + dateToday;
   }
 
   @Override
-  public void createSuccessfulMessage() {
-    System.out.println("Successfully created portfolio.");
+  public String createSuccessfulMessage() {
+    return "Successfully created portfolio.";
   }
 
   @Override
-  public void createUnsuccessfulMessage() {
-    System.out.println("No stocks entered.");
+  public String createUnsuccessfulMessage() {
+    return "No stocks entered.";
   }
 
+
+  /* (Check if this is needed.) */
   @Override
-  public void displayErrorMessage(String error){
-    System.out.println(error);
+  public String displayErrorMessage(String error){
+
+    return error;
   }
 }

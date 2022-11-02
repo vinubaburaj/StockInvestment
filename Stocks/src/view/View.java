@@ -11,18 +11,18 @@ public interface View {
   /**
    * Method that displays the main menu to the client.
    */
-  void showMenu();
+  String showMenu();
 
   /**
    * Method that shows the options of stocks available in this program.
    */
-  void showStockOptions();
+  String showStockOptions();
 
   /**
    * Method to intimate user to enter the integer amount
    * of shares to be bought.
    */
-  void showNumberOfSharesMessage();
+  String showNumberOfSharesMessage();
 
   /**
    * Displays the contents of a portfolio.
@@ -34,26 +34,27 @@ public interface View {
    * [3] - Date when share was purchased.
    *
    * @param stocks list of stocks contained in the portfolio.
+   *
    */
-  void showPortfolio(List<String[]> stocks);
+  String showPortfolio(List<String[]> stocks);
 
   /**
    * Method to intimate user to enter portfolio name
    * which is to be scanned for further operations.
    */
-  void inputPortfolioName();
+  String inputPortfolioName();
 
   /**
    * Method to intimate user to enter the date for
    * which they want to find the value of a portfolio.
    */
-  void inputDate();
+  String inputDate();
 
   /**
    * Method to display the total value of a portfolio
    * on a particular date to the user.
    */
-  void showTotalValue(String portfolioName, String date, Double totalValue);
+  String showTotalValue(String portfolioName, String date, Double totalValue);
 
   /**
    * Method that intimates the user to display a valid date
@@ -62,25 +63,25 @@ public interface View {
    * @param dateToday        most recent local date user can provide.
    * @param lastHistoricDate oldest date user can provide.
    */
-  void showInvalidDateMessage(LocalDate dateToday,
+  String showInvalidDateMessage(LocalDate dateToday,
                               LocalDate lastHistoricDate);
 
   /**
    * Method that intimates the user that a portfolio has been
    * successfully created.
    */
-  void createSuccessfulMessage();
+  String createSuccessfulMessage();
 
   /**
    * Method that intimates the user when a portfolio
    * could not be created.
    */
-  void createUnsuccessfulMessage();
+  String createUnsuccessfulMessage();
 
   /**
    * Method that takes an error message as input from the controller
    * and displays it in the view component.
    * @param error the error message to be displayed.
    */
-  void displayErrorMessage(String error);
+  String displayErrorMessage(String error);
 }

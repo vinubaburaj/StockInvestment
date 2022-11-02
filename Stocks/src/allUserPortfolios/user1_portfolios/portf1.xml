@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>portf1</Portfolio-Name>
+    <Stock>
+        <Date>2022-10-28</Date>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Shares-owned>5</Shares-owned>
+    </Stock>
+</Portfolio>
