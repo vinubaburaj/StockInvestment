@@ -22,24 +22,14 @@ public class ViewImpl implements View {
   }
 
   @Override
-  public void viewAllPortfolio() {
-
-  }
-
-  @Override
-  public void viewPortfolio() {
-
-  }
-
-  @Override
   public void showStockOptions() {
     int i = 1;
-    System.out.println("Choose a stock number from the following, after which" +
-            " enter the number of shares needed");
+    System.out.println("Type the stock TICKER, after which"
+            + " enter the number of shares needed");
     for (stockTicker st : stockTicker.values()) {
-      System.out.println(i++ + ". " + st.getStockName());
+      System.out.println(i++ + ". " + st.getStockName() + "( Ticker: " + st + ")");
     }
-    System.out.println(i + ". " + "Finished adding stocks, create portfolio now.");
+    System.out.println(i + ". " + "Finished adding stocks, create portfolio now. (Type Quit)");
   }
 
   public void showNumberOfSharesMessage() {
@@ -90,7 +80,7 @@ public class ViewImpl implements View {
   }
 
   @Override
-  public void createUnsuccessfullMessage(){
+  public void createUnsuccessfulMessage(){
     System.out.println("No stocks entered.");
   }
 }
