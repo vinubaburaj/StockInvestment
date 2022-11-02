@@ -76,4 +76,11 @@ public interface View {
    * could not be created.
    */
   void createUnsuccessfulMessage();
+
+  /**
+   * Method that takes an error message as input from the controller
+   * and displays it in the view component.
+   * @param error the error message to be displayed.
+   */
+  void displayErrorMessage(String error);
 }
