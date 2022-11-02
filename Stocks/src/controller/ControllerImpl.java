@@ -61,7 +61,7 @@ public class ControllerImpl implements Controller{
             view.createSuccessfulMessage();
           }
           else{
-            view.createUnsuccessfullMessage();
+            view.createUnsuccessfulMessage();
           }
         }
         break;
@@ -104,75 +104,49 @@ public class ControllerImpl implements Controller{
 
   }
 
-  private List<Stocks> createPortfolioController() throws IllegalArgumentException{
+  private List<Stocks> createPortfolioController() throws IllegalArgumentException {
     boolean run = true;
     Scanner scan = new Scanner(this.in);
     List<Stocks> stocks = new ArrayList<>();
     HashMap<stockTicker, Integer> uniqueTickers = new HashMap<>();
 
-    while(run){
+    while (run) {
       View view = new ViewImpl();
       view.showStockOptions();
-      int stockChoice;
+      stockTicker stockChoice;
       String stringStockChoice = scan.nextLine();
-      try{
-        stockChoice = Integer.parseInt(stringStockChoice);
-      }
-      catch(Exception e){
-        throw new IllegalArgumentException("Invalid entry for stock choice. "
-                + "Please provide a number from the options given.");
-      }
-//      stockChoice = scan.nextInt();
-      int numberOfShares = 0;
-      if(stockChoice < 6 && stockChoice > 0){
+
+      if (!stringStockChoice.equalsIgnoreCase("Quit")) {
+        try {
+          stockChoice = stockTicker.valueOf(stringStockChoice);
+        } catch (Exception e) {
+          throw new IllegalArgumentException("Invalid entry for stock choice. "
+                  + "Please provide valid stock ticker from the list provided.");
+        }
+        int numberOfShares = 0;
         view.showNumberOfSharesMessage();
         String stringNumberOfShares = scan.nextLine();
-        try{
+        try {
           numberOfShares = Integer.parseInt(stringNumberOfShares);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
           throw new IllegalArgumentException("Invalid entry for number of "
                   + "shares. Please enter a whole number value of number of "
                   + "shares to be bought");
         }
-//        numberOfShares = scan.nextInt();
+        getUniqTicks(uniqueTickers, stockChoice, numberOfShares);
+
       }
-      switch(stockChoice){
-        case 1: {
-          getUniqTicks(uniqueTickers, stockTicker.MSFT, numberOfShares);
-        }
-        break;
-        case 2: {
-          getUniqTicks(uniqueTickers, stockTicker.GOOGL, numberOfShares);
-        }
-        break;
-        case 3: {
-          getUniqTicks(uniqueTickers, stockTicker.AAPL, numberOfShares);
-        }
-        break;
-        case 4: {
-          getUniqTicks(uniqueTickers, stockTicker.IBM, numberOfShares);
-        }
-        break;
-        case 5: {
-          getUniqTicks(uniqueTickers, stockTicker.MS, numberOfShares);
-        }
-        break;
-        case 6: {
-          run = false;
-          break;
-        }
-        default: {
-          throw new IllegalArgumentException("Invalid number entered. "
-                  + "Please enter a number from the choices provided.");
-        }
+      else {
+        run = false;
+
       }
     }
+
     for (Map.Entry<stockTicker, Integer> entry : uniqueTickers.entrySet()) {
       Stocks stock = new Stocks(entry.getKey(), entry.getValue());
       stocks.add(stock);
     }
-      return stocks;
+    return stocks;
   }
 
   private void getUniqTicks(HashMap<stockTicker,
@@ -235,15 +209,12 @@ public class ControllerImpl implements Controller{
     LocalDate dateCur = LocalDate.parse(date);
 
     if ("SUNDAY".equals(dateCur.getDayOfWeek().toString())) {
-      System.out.println(String.valueOf(dateCur.minusDays(2)));
       return String.valueOf(dateCur.minusDays(2));
     } else if ("SATURDAY".equals(dateCur.getDayOfWeek().toString())) {
-      System.out.println(String.valueOf(dateCur.minusDays(1)));
       return String.valueOf(dateCur.minusDays(1));
     } else {
       return date;
     }
   }
-
 
 }

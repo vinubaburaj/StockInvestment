@@ -14,16 +14,6 @@ public interface View {
   void showMenu();
 
   /**
-   * Method that displays all the portfolios of a user.
-   */
-  void viewAllPortfolio();
-
-  /**
-   * Method that displays a particular portfolio of a user.
-   */
-  void viewPortfolio();
-
-  /**
    * Method that shows the options of stocks available in this program.
    */
   void showStockOptions();
@@ -85,5 +75,5 @@ public interface View {
    * Method that intimates the user when a portfolio
    * could not be created.
    */
-  void createUnsuccessfullMessage();
+  void createUnsuccessfulMessage();
 }
