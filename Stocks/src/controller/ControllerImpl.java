@@ -6,7 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.io.File;
 
@@ -106,6 +108,8 @@ public class ControllerImpl implements Controller{
     boolean run = true;
     Scanner scan = new Scanner(this.in);
     List<Stocks> stocks = new ArrayList<>();
+    HashMap<stockTicker, Integer> uniqueTickers = new HashMap<>();
+
     while(run){
       View view = new ViewImpl();
       view.showStockOptions();
@@ -120,7 +124,7 @@ public class ControllerImpl implements Controller{
       }
 //      stockChoice = scan.nextInt();
       int numberOfShares = 0;
-      if(stockChoice < 6 && stockChoice > 1){
+      if(stockChoice < 6 && stockChoice > 0){
         view.showNumberOfSharesMessage();
         String stringNumberOfShares = scan.nextLine();
         try{
@@ -135,28 +139,23 @@ public class ControllerImpl implements Controller{
       }
       switch(stockChoice){
         case 1: {
-          Stocks s = new Stocks(stockTicker.MSFT, numberOfShares);
-          stocks.add(s);
+          getUniqTicks(uniqueTickers, stockTicker.MSFT, numberOfShares);
         }
         break;
         case 2: {
-          Stocks s = new Stocks(stockTicker.GOOGL, numberOfShares);
-          stocks.add(s);
+          getUniqTicks(uniqueTickers, stockTicker.GOOGL, numberOfShares);
         }
         break;
         case 3: {
-          Stocks s = new Stocks(stockTicker.AAPL, numberOfShares);
-          stocks.add(s);
+          getUniqTicks(uniqueTickers, stockTicker.AAPL, numberOfShares);
         }
         break;
         case 4: {
-          Stocks s = new Stocks(stockTicker.IBM, numberOfShares);
-          stocks.add(s);
+          getUniqTicks(uniqueTickers, stockTicker.IBM, numberOfShares);
         }
         break;
         case 5: {
-          Stocks s = new Stocks(stockTicker.MS, numberOfShares);
-          stocks.add(s);
+          getUniqTicks(uniqueTickers, stockTicker.MS, numberOfShares);
         }
         break;
         case 6: {
@@ -169,7 +168,21 @@ public class ControllerImpl implements Controller{
         }
       }
     }
+    for (Map.Entry<stockTicker, Integer> entry : uniqueTickers.entrySet()) {
+      Stocks stock = new Stocks(entry.getKey(), entry.getValue());
+      stocks.add(stock);
+    }
       return stocks;
+  }
+
+  private void getUniqTicks(HashMap<stockTicker,
+          Integer> u, stockTicker ticker, int numOfShares){
+    if(u.containsKey(ticker)) {
+      int n = u.get(ticker);
+      u.put(ticker, n + numOfShares);
+    }else{
+      u.put(ticker, numOfShares);
+    }
   }
 
   private boolean checkFileExists(String portfolioName){
