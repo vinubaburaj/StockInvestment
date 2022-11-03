@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.text.ParseException;
@@ -21,41 +22,42 @@ import enums.stockTicker;
 
 
 public class ControllerImpl implements Controller {
-  final InputStream in;
-  final PrintStream out;
+  final Readable in;
+  final Appendable out;
+  Scanner scan;
 
   private static final LocalDate dateToday = LocalDate.parse("2022-10-28");
   private static final LocalDate lastHistoricDate = LocalDate.parse("2022-06-08");
 
-  public ControllerImpl(InputStream in, PrintStream out) {
+  public ControllerImpl(Readable in, Appendable out) {
     this.in = in;
     this.out = out;
+    this.scan = new Scanner(this.in);
   }
 
   @Override
-  public void start() throws IllegalArgumentException {
+  public void start() throws IOException {
     View view = new ViewImpl();
     boolean run = true;
     while (run) {
-      view.showMenu();
-      Scanner scan = new Scanner(this.in);
+      out.append(view.showMenu());
       int choice = 8;
       try {
-        String stringChoice = scan.nextLine();
+        String stringChoice = scan.next();
         choice = Integer.parseInt(stringChoice);
       } catch (Exception e) {
-        view.displayErrorMessage("Invalid entry. Please choose "
-                + "a number to enter your choice.");
+        out.append(view.displayErrorMessage("Invalid entry. Please choose "
+                + "a number to enter your choice."));
         this.start();
         return;
       }
       switch (choice) {
         case 1: {
-          view.inputPortfolioName();
-          String portfolioName = scan.nextLine();
+          this.out.append(view.inputPortfolioName());
+          String portfolioName = scan.next();
           if (checkFileExists(portfolioName)) {
-            view.displayErrorMessage("Portfolio with name "
-                    + "already exists. Please choose another name.");
+            out.append(view.displayErrorMessage("Portfolio with name "
+                    + "already exists. Please choose another name."));
             this.start();
             return ;
           }
@@ -63,19 +65,19 @@ public class ControllerImpl implements Controller {
           if (stocks.size() > 0) {
             Portfolio portfolio = new PortfolioImpl();
             portfolio.createPortfolio(stocks, portfolioName);
-            view.createSuccessfulMessage();
+            out.append(view.createSuccessfulMessage());
           } else {
-            view.createUnsuccessfulMessage();
+            out.append(view.createUnsuccessfulMessage());
           }
         }
         break;
 
         case 2: {
-          view.inputPortfolioName();
+          this.out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
           if (!checkFileExists(portfolioName)) {
-            view.displayErrorMessage("Portfolio with name "
-                    + portfolioName + " doesn't exist");
+            out.append(view.displayErrorMessage("Portfolio with name "
+                    + portfolioName + " doesn't exist"));
             this.start();
             return ;
           }
@@ -84,17 +86,17 @@ public class ControllerImpl implements Controller {
         }
 
         case 3: {
-          view.inputPortfolioName();
+          out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
           if (!checkFileExists(portfolioName)) {
-            view.displayErrorMessage("Portfolio name: "
-                    + portfolioName + " doesn't exist");
+            out.append(view.displayErrorMessage("Portfolio name: "
+                    + portfolioName + " doesn't exist"));
             this.start();
             return ;
           }
-          view.inputDate();
+          out.append(view.inputDate());
           String date = scan.next();
-          getTotalPortfolioValueController(portfolioName, date);
+          this.getTotalPortfolioValueController(portfolioName, date);
           break;
         }
 
@@ -104,8 +106,8 @@ public class ControllerImpl implements Controller {
         }
 
         default: {
-          view.displayErrorMessage("Invalid choice selected. Please choose "
-                  + "an option from the list provided");
+          out.append(view.displayErrorMessage("Invalid choice selected. Please choose "
+                  + "an option from the list provided"));
           this.start();
           return ;
         }
@@ -114,32 +116,30 @@ public class ControllerImpl implements Controller {
 
   }
 
-  private List<Stocks> createPortfolioController() throws IllegalArgumentException {
+  private List<Stocks> createPortfolioController() throws IllegalArgumentException, IOException {
     boolean run = true;
-    Scanner scan = new Scanner(this.in);
     List<Stocks> stocks = new ArrayList<>();
     HashMap<stockTicker, Integer> uniqueTickers = new HashMap<>();
-
     while (run) {
       View view = new ViewImpl();
-      view.showStockOptions();
+      this.out.append(view.showStockOptions());
       stockTicker stockChoice;
-      String stringStockChoice = scan.nextLine();
+      String stringStockChoice = scan.next();
 
-      if (!stringStockChoice.equalsIgnoreCase("Quit")) {
+      if (!stringStockChoice.equalsIgnoreCase("Finish")) {
         try {
           stockChoice = stockTicker.valueOf(stringStockChoice);
         } catch (Exception e) {
-          throw new IllegalArgumentException("Invalid entry for stock choice. "
+          throw new IOException("Invalid entry for stock choice. "
                   + "Please provide valid stock ticker from the list provided.");
         }
         int numberOfShares = 0;
-        view.showNumberOfSharesMessage();
-        String stringNumberOfShares = scan.nextLine();
+        this.out.append(view.showNumberOfSharesMessage());
+        String stringNumberOfShares = scan.next();
         try {
           numberOfShares = Integer.parseInt(stringNumberOfShares);
         } catch (Exception e) {
-          throw new IllegalArgumentException("Invalid entry for number of "
+          throw new IOException("Invalid entry for number of "
                   + "shares. Please enter a whole number value of number of "
                   + "shares to be bought");
         }
@@ -174,16 +174,16 @@ public class ControllerImpl implements Controller {
     return filePath.exists();
   }
 
-  private void examinePortfolioController(String portfolioName) {
+  private void examinePortfolioController(String portfolioName) throws IOException {
     Portfolio portfolio = new PortfolioImpl();
     List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
 
     View view = new ViewImpl();
-    view.showPortfolio(stocks);
+    out.append(view.showPortfolio(stocks));
 
   }
 
-  private void getTotalPortfolioValueController(String portfolioName, String date) {
+  private void getTotalPortfolioValueController(String portfolioName, String date) throws IOException {
     boolean isValidDate = checkDateValidity(date);
     View view = new ViewImpl();
     if (isValidDate) {
@@ -192,9 +192,9 @@ public class ControllerImpl implements Controller {
       List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
       Double totalValue = portfolio.getTotalValue(stocks, getDateToSearch);
 
-      view.showTotalValue(portfolioName, getDateToSearch, totalValue);
+      out.append(view.showTotalValue(portfolioName, getDateToSearch, totalValue));
     } else {
-      view.showInvalidDateMessage(dateToday, lastHistoricDate);
+      out.append(view.showInvalidDateMessage(dateToday, lastHistoricDate));
     }
   }
 
