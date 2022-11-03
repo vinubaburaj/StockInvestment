@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import model.PortfolioImpl;
+
 import static org.junit.Assert.assertEquals;
 
 public class ControllerImplTest {
@@ -15,7 +17,7 @@ public class ControllerImplTest {
       StringBuffer out = new StringBuffer();
       Reader in = new StringReader("2 Trial18 4");
       Controller cnt = new ControllerImpl(in, out);
-      cnt.start();
+      cnt.start(new PortfolioImpl());
       String[] output  = out.toString().split("\n");
       assertEquals("Stock Name: Microsoft", output[8]);
       assertEquals("Number of shares purchased: 5", output[9]);
@@ -28,7 +30,7 @@ public class ControllerImplTest {
     StringBuffer out = new StringBuffer();
     Reader in = new StringReader("2 Trial15 4");
     Controller cnt = new ControllerImpl(in, out);
-    cnt.start();
+    cnt.start(new PortfolioImpl());
     String[] output  = out.toString().split("\n");
 //    assertEquals("Stock Name: Morgan Stanley", out.toString());
     assertEquals("Stock Name: Morgan Stanley", output[11]);
@@ -53,7 +55,7 @@ public class ControllerImplTest {
     Reader in = new StringReader("1 singlePortf GOOGL 22 MSFT 5 " +
             "IBM 10 MS 23 Finish 4");
     Controller cnt = new ControllerImpl(in, out);
-    cnt.start();
+    cnt.start(new PortfolioImpl());
     String[] output  = out.toString().split("\n");
     assertEquals("Successfully created portfolio.",output[61]);
   }
@@ -67,7 +69,7 @@ public class ControllerImplTest {
             "2 multPortf2 " +
             "2 multPortf3 4");
     Controller cnt = new ControllerImpl(in, out);
-    cnt.start();
+    cnt.start(new PortfolioImpl());
     String[] output = out.toString().split("\n");
     assertEquals("Successfully created portfolio.", output[39]);
     assertEquals("Successfully created portfolio.", output[79]);
@@ -88,11 +90,12 @@ public class ControllerImplTest {
   @Test
   public void getValueTest() throws IOException {
     StringBuffer out = new StringBuffer();
-    Reader in = new StringReader("3 multPortf1 2022-10-27");
+    Reader in = new StringReader("3 multPortf1 2022-10-27 4");
     Controller cnt = new ControllerImpl(in, out);
-    cnt.start();
-    assertEquals("abc",out.toString());
+    cnt.start(new PortfolioImpl());
     String[] output = out.toString().split("\n");
+    assertEquals("Total value of portfolio multPortf1 on 2022-10-27 is: 993.54",
+            output[11]);
     // Total value of portfolio multportf1 on 2022-10-27 is: 993.54
   }
 }

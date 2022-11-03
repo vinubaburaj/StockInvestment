@@ -36,7 +36,7 @@ public class ControllerImpl implements Controller {
   }
 
   @Override
-  public void start() throws IOException {
+  public void start(Portfolio portfolio) throws IOException {
     View view = new ViewImpl();
     boolean run = true;
     while (run) {
@@ -48,7 +48,7 @@ public class ControllerImpl implements Controller {
       } catch (Exception e) {
         out.append(view.displayErrorMessage("Invalid entry. Please choose "
                 + "a number to enter your choice."));
-        this.start();
+        this.start(portfolio);
         return;
       }
       switch (choice) {
@@ -58,12 +58,12 @@ public class ControllerImpl implements Controller {
           if (checkFileExists(portfolioName)) {
             out.append(view.displayErrorMessage("Portfolio with name "
                     + "already exists. Please choose another name."));
-            this.start();
+            this.start(portfolio);
             return ;
           }
           List<Stocks> stocks = createPortfolioController();
           if (stocks.size() > 0) {
-            Portfolio portfolio = new PortfolioImpl();
+//            Portfolio portfolio = new PortfolioImpl();
             portfolio.createPortfolio(stocks, portfolioName);
             out.append(view.createSuccessfulMessage());
           } else {
@@ -78,10 +78,10 @@ public class ControllerImpl implements Controller {
           if (!checkFileExists(portfolioName)) {
             out.append(view.displayErrorMessage("Portfolio with name "
                     + portfolioName + " doesn't exist"));
-            this.start();
+            this.start(portfolio);
             return ;
           }
-          examinePortfolioController(portfolioName);
+          examinePortfolioController(portfolioName, portfolio);
           break;
         }
 
@@ -91,12 +91,12 @@ public class ControllerImpl implements Controller {
           if (!checkFileExists(portfolioName)) {
             out.append(view.displayErrorMessage("Portfolio name: "
                     + portfolioName + " doesn't exist"));
-            this.start();
+            this.start(portfolio);
             return ;
           }
           out.append(view.inputDate());
           String date = scan.next();
-          this.getTotalPortfolioValueController(portfolioName, date);
+          this.getTotalPortfolioValueController(portfolioName, date, portfolio);
           break;
         }
 
@@ -108,7 +108,7 @@ public class ControllerImpl implements Controller {
         default: {
           out.append(view.displayErrorMessage("Invalid choice selected. Please choose "
                   + "an option from the list provided"));
-          this.start();
+          this.start(portfolio);
           return ;
         }
       }
@@ -174,8 +174,8 @@ public class ControllerImpl implements Controller {
     return filePath.exists();
   }
 
-  private void examinePortfolioController(String portfolioName) throws IOException {
-    Portfolio portfolio = new PortfolioImpl();
+  private void examinePortfolioController(String portfolioName, Portfolio portfolio) throws IOException {
+//    Portfolio portfolio = new PortfolioImpl();
     List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
 
     View view = new ViewImpl();
@@ -183,12 +183,12 @@ public class ControllerImpl implements Controller {
 
   }
 
-  private void getTotalPortfolioValueController(String portfolioName, String date) throws IOException {
+  private void getTotalPortfolioValueController(String portfolioName, String date, Portfolio portfolio) throws IOException {
     boolean isValidDate = checkDateValidity(date);
     View view = new ViewImpl();
     if (isValidDate) {
       String getDateToSearch = getDateToLook(date);
-      Portfolio portfolio = new PortfolioImpl();
+//      Portfolio portfolio = new PortfolioImpl();
       List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
       Double totalValue = portfolio.getTotalValue(stocks, getDateToSearch);
 
