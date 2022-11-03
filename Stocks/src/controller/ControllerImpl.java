@@ -86,7 +86,7 @@ public class ControllerImpl implements Controller {
         }
 
         case 3: {
-          view.inputPortfolioName();
+          out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
           if (!checkFileExists(portfolioName)) {
             out.append(view.displayErrorMessage("Portfolio name: "
@@ -96,7 +96,7 @@ public class ControllerImpl implements Controller {
           }
           out.append(view.inputDate());
           String date = scan.next();
-          getTotalPortfolioValueController(portfolioName, date);
+          this.getTotalPortfolioValueController(portfolioName, date);
           break;
         }
 
@@ -118,8 +118,6 @@ public class ControllerImpl implements Controller {
 
   private List<Stocks> createPortfolioController() throws IllegalArgumentException, IOException {
     boolean run = true;
-//    Scanner scan = new Scanner(this.in);
-//    Scanner scan = new Scanner(in);
     List<Stocks> stocks = new ArrayList<>();
     HashMap<stockTicker, Integer> uniqueTickers = new HashMap<>();
     while (run) {
@@ -128,7 +126,7 @@ public class ControllerImpl implements Controller {
       stockTicker stockChoice;
       String stringStockChoice = scan.next();
 
-      if (!stringStockChoice.equalsIgnoreCase("Quit")) {
+      if (!stringStockChoice.equalsIgnoreCase("Finish")) {
         try {
           stockChoice = stockTicker.valueOf(stringStockChoice);
         } catch (Exception e) {
