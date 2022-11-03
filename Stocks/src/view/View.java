@@ -34,7 +34,6 @@ public interface View {
    * [3] - Date when share was purchased.
    *
    * @param stocks list of stocks contained in the portfolio.
-   *
    */
   String showPortfolio(List<String[]> stocks);
 
@@ -43,12 +42,6 @@ public interface View {
    * which is to be scanned for further operations.
    */
   String inputPortfolioName();
-
-  /**
-   * Method to intimate user to enter the date for
-   * which they want to find the value of a portfolio.
-   */
-  String inputDate();
 
   /**
    * Method to display the total value of a portfolio
@@ -63,8 +56,8 @@ public interface View {
    * @param dateToday        most recent local date user can provide.
    * @param lastHistoricDate oldest date user can provide.
    */
-  String showInvalidDateMessage(LocalDate dateToday,
-                              LocalDate lastHistoricDate);
+  String showDateMessage(LocalDate dateToday,
+                         LocalDate lastHistoricDate);
 
   /**
    * Method that intimates the user that a portfolio has been
@@ -81,7 +74,9 @@ public interface View {
   /**
    * Method that takes an error message as input from the controller
    * and displays it in the view component.
+   *
    * @param error the error message to be displayed.
    */
   String displayErrorMessage(String error);
+
 }

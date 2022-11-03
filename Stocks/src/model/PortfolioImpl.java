@@ -2,9 +2,9 @@ package model;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -27,13 +27,16 @@ import javax.xml.transform.stream.StreamResult;
 
 import enums.stockTicker;
 
-
+/**
+ * This class contains the implementation of a portfolio.
+ */
 public class PortfolioImpl implements Portfolio {
 
-  private void createXML(List<Stocks> stocks, String portfolioName) {
+  @Override
+  public void createPortfolio(List<Stocks> stocks, String portfolioName) {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-    String lastDate = "2022-10-28";
+    String lastDate = "2022-11-02";
 
     try {
       DocumentBuilder builder = dbf.newDocumentBuilder();
@@ -58,13 +61,9 @@ public class PortfolioImpl implements Portfolio {
         fillStockEmel(doc, stockElement, "Stock-ticker", stock.getTicker());
         fillStockEmel(doc, stockElement, "Shares-owned", String.valueOf(stock.getNumberOfShares()));
         root.appendChild(stockElement);
-
       }
-
       doc.appendChild(root);
-
       DOMSource source = new DOMSource(doc);
-
       String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
       File f = new File(path);
       Result result = new StreamResult(f);
@@ -80,17 +79,7 @@ public class PortfolioImpl implements Portfolio {
     }
   }
 
-  private void fillStockEmel(Document doc, Element stock, String child, String text) {
-    Element c = doc.createElement(child);
-    Text textNode = doc.createTextNode(text);
-    c.appendChild(textNode);
-    stock.appendChild(c);
-  }
-
-  public void createPortfolio(List<Stocks> stocks, String portfolioName) {
-    createXML(stocks, portfolioName);
-  }
-
+  @Override
   public List<String[]> examinePortfolio(String portfolioName) {
     String path = "src/allUserPortfolios/user1_portfolios/"
             + portfolioName + ".xml";
@@ -101,11 +90,8 @@ public class PortfolioImpl implements Portfolio {
     try {
       // parse XML file
       DocumentBuilder db = dbf.newDocumentBuilder();
-
       Document doc = db.parse(new File(path));
-
       doc.getDocumentElement().normalize();
-
       NodeList list = doc.getElementsByTagName("Stock");
 
       for (int temp = 0; temp < list.getLength(); temp++) {
@@ -139,17 +125,23 @@ public class PortfolioImpl implements Portfolio {
     return stocks;
   }
 
-
+  @Override
   public Double getTotalValue(List<String[]> stocks, String date) {
-
     double totalValue = 0;
-
     for (String[] stock : stocks) {
       Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
-      s.fillStockData(date);
-      totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
+      if (s.fillStockData(date)) {
+        totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
+      }
     }
     return totalValue;
+  }
+
+  private void fillStockEmel(Document doc, Element stock, String child, String text) {
+    Element c = doc.createElement(child);
+    Text textNode = doc.createTextNode(text);
+    c.appendChild(textNode);
+    stock.appendChild(c);
   }
 
 }

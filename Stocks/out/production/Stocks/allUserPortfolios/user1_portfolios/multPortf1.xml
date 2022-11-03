@@ -2,12 +2,12 @@
 <Portfolio>
     <Portfolio-Name>multPortf1</Portfolio-Name>
     <Stock>
-        <Date>2022-10-28</Date>
+        <Date>2022-11-02</Date>
         <Stock-ticker>AAPL</Stock-ticker>
         <Shares-owned>5</Shares-owned>
     </Stock>
     <Stock>
-        <Date>2022-10-28</Date>
+        <Date>2022-11-02</Date>
         <Stock-ticker>IBM</Stock-ticker>
         <Shares-owned>2</Shares-owned>
     </Stock>

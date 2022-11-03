@@ -5,7 +5,9 @@ import java.util.List;
 
 import enums.stockTicker;
 
-
+/**
+ * This view class decides how the user sees outputs produced by the program.
+ */
 public class ViewImpl implements View {
   @Override
   public String showMenu() {
@@ -15,7 +17,7 @@ public class ViewImpl implements View {
             + "3. Get total value of a portfolio on a specified date. \n"
             + "4. Exit the program \n"
             + "\n"
-            + "Choose an option number: ";
+            + "Choose an option number: \n";
     return s;
   }
 
@@ -23,23 +25,30 @@ public class ViewImpl implements View {
   public String showStockOptions() {
     int i = 1;
     StringBuilder s = new StringBuilder();
-    s.append("\nType the stock TICKER, after which enter the number of shares needed\n");
+    s.append("\nType the stock TICKER\n");
     for (stockTicker st : stockTicker.values()) {
       s.append(st.getStockName()).
               append("( Ticker: ").
               append(st).
               append(") \n");
     }
-    s.append("Finished adding stocks, create portfolio now. (Type Finish)\n");
+    s.append("Finished adding stocks, create portfolio now. (Type Quit)\n");
     return s.toString();
   }
 
+
   @Override
   public String showNumberOfSharesMessage() {
-
     String s = "\nEnter the number of shares you want to buy of this stock: \n"
             + " (Note: You can only buy whole number amount of shares) \n";
     return s;
+  }
+
+  @Override
+  public String showDateMessage(LocalDate dateToday,
+                                LocalDate lastHistoricDate) {
+    return ("Please enter a valid date in YYYY-MM-DD format between "
+            + lastHistoricDate + " and " + dateToday + " (Must be a business day)\n");
   }
 
   @Override
@@ -62,23 +71,11 @@ public class ViewImpl implements View {
   }
 
   @Override
-  public String inputDate() {
-    return "\nEnter the date in YYYY-MM-DD format for which "
-            + "you want to calculate the total value of the portfolio.\n";
-  }
-
-  @Override
   public String showTotalValue(String portfolioName, String date, Double totalValue) {
     return "\nTotal value of portfolio " + portfolioName
             + " on " + date + " is: " + totalValue + "\n";
   }
 
-  @Override
-  public String showInvalidDateMessage(LocalDate dateToday,
-                                       LocalDate lastHistoricDate) {
-    return "\nPlease enter a valid date in YYYY-MM-DD format between "
-            + lastHistoricDate + " and " + dateToday + "\n";
-  }
 
   @Override
   public String createSuccessfulMessage() {
@@ -91,7 +88,6 @@ public class ViewImpl implements View {
   }
 
 
-  /* (Check if this is needed.) */
   @Override
   public String displayErrorMessage(String error) {
 

@@ -1,11 +1,11 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 import enums.stockTicker;
+import utility.ReadCSVs;
 
+/**
+ * This class represents a stock at a particular date.
+ */
 public class Stocks {
   stockTicker stockSymbol;
   String date;
@@ -25,58 +25,53 @@ public class Stocks {
   }
 
   /**
-   * Method that fetches the data of a stock from an API and stores
-   * it in its fields.
+   * Method that fetches the data of a stock from a file and returns true if
+   * data was found and false otherwise.
    */
-  void fillStockData(String date) {
-
+  public boolean fillStockData(String date) {
     String pathToFile = "src/stocksData_csv/daily_" + this.stockSymbol + ".csv";
-    this.setDate(date);
-    BufferedReader reader = null;
-    String line = "";
-    try {
-      reader = new BufferedReader(new FileReader(pathToFile));
-      while ((line = reader.readLine()) != null) {
-        String[] lineArray = line.split(",");
-        if (lineArray[0].equals(this.date)) {
-          try {
-            this.setValueOfShare(lineArray[4]);
-          } catch (NumberFormatException e) {
-            throw new NumberFormatException(e.getMessage());
-          }
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (reader != null) {
-          reader.close();
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    ReadCSVs read = new ReadCSVs(pathToFile);
+    String[] data = read.getDataByDate(date);
+    if (data.length == 6) {
+      this.setDate(date);
+      this.setValueOfShare(data[4]);
+      return true;
+    } else {
+      return false;
     }
   }
 
+  /**
+   * Method that fetches the stocksymbol of the object.
+   */
   String getTicker() {
     return this.stockSymbol.toString();
   }
 
+  /**
+   * Method that fetches the number of shares of the stock object.
+   */
   int getNumberOfShares() {
     return this.numberOfShares;
   }
 
+  /**
+   * Method that fetches the value of the current share.
+   */
   String getValueOfShare() {
     return this.valueOfShare;
   }
 
-  String getDate() {
-    return this.date;
-  }
-
   private void setValueOfShare(String value) {
     this.valueOfShare = value;
+  }
+
+  /**
+   * Method that fetches the current date as on which the data
+   * of the stock is available.
+   */
+  String getDate() {
+    return this.date;
   }
 
   private void setDate(String date) {
