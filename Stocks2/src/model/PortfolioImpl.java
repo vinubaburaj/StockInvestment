@@ -33,22 +33,6 @@ import enums.stockTicker;
  */
 public class PortfolioImpl extends AbstractPortfolio{
 
-//  @Override
-//  public void createPortfolio(List<Stocks> stocks, String portfolioName) {
-//
-//  }
 
-
-//  @Override
-//  public Double getTotalValue(List<String[]> stocks, String date) {
-//
-//  }
-
-//  private void fillStockEmel(Document doc, Element stock, String child, String text) {
-//    Element c = doc.createElement(child);
-//    Text textNode = doc.createTextNode(text);
-//    c.appendChild(textNode);
-//    stock.appendChild(c);
-//  }
 
 }

@@ -61,11 +61,12 @@ public final class UtilityClass {
    * @param portfolioName the file to check
    */
   public static boolean checkFileExists(String portfolioName) {
-    String absolutePath = System.getProperty("user.dir");
-    String osSeperator = System.getProperty("file.separator");
-    String path = absolutePath + osSeperator + "allUserPortfolios" + osSeperator
-            + "user1_portfolios" + osSeperator
-            + portfolioName + ".xml";
+//    String absolutePath = System.getProperty("user.dir");
+//    String osSeperator = System.getProperty("file.separator");
+//    String path = absolutePath + osSeperator + "allUserPortfolios" + osSeperator
+//            + "user1_portfolios" + osSeperator
+//            + portfolioName + ".xml";
+    String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
     File filePath = new File(path);
     return filePath.exists();
   }
