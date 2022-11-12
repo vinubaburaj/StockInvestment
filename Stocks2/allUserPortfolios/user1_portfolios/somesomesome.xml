@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>somesomesome</Portfolio-Name>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>JPM</Stock-ticker>
+        <Shares-owned>5</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>MDB</Stock-ticker>
+        <Shares-owned>8</Shares-owned>
+    </Stock>
+</Portfolio>

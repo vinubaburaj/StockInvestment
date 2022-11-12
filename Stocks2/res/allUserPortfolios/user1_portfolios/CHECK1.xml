@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>CHECK1</Portfolio-Name>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Shares-owned>10</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>NFLX</Stock-ticker>
+        <Shares-owned>15</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>USAU</Stock-ticker>
+        <Shares-owned>20</Shares-owned>
+    </Stock>
+</Portfolio>

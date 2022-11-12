@@ -6,11 +6,24 @@ import java.util.List;
 import model.Portfolio;
 import model.Stocks;
 
+/**
+ * Mock class that mocks the working of a model.
+ * It logs the input being provided to the controller
+ * and the output being provided to the controller.
+ * This is done to check the functionality of controller
+ * in isolation.
+ */
 public class MockPortfolio implements Portfolio {
 
-  private StringBuilder log;
+  private final StringBuilder log;
   private final int uniqueCode;
 
+  /**
+   * Constructor that takes a log and the unique code
+   * which it returns to the controller to check for.
+   * @param log a logger checks the input provided.
+   * @param uniqueCode a unique code that is logged to test.
+   */
   public MockPortfolio(StringBuilder log, int uniqueCode){
     this.log = log;
     this.uniqueCode = uniqueCode;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>abc</Portfolio-Name>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>AMZN</Stock-ticker>
+        <Shares-owned>5</Shares-owned>
+    </Stock>
+    <Stock>
+        <Date>2022-11-02</Date>
+        <Stock-ticker>GOOGL</Stock-ticker>
+        <Shares-owned>-2</Shares-owned>
+    </Stock>
+</Portfolio>

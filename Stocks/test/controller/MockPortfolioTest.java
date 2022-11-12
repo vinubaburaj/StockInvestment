@@ -8,12 +8,17 @@ import java.io.StringReader;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * This class contains the test that are used by
+ * the mock model to test the correctness of the controller
+ * in isolation.
+ */
 public class MockPortfolioTest {
 
   @Test
   public void createPortfolioTest() throws IOException {
     StringBuffer out = new StringBuffer();
-    Reader in = new StringReader("1 mockTest MSFT 5 Finish 4");
+    Reader in = new StringReader("1 mockTest MSFT 5 Quit 4");
     Controller cnt = new ControllerImpl(in, out);
     StringBuilder log = new StringBuilder();
     int code = 1234621;
