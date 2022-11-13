@@ -12,10 +12,14 @@ public class ViewImpl implements View {
   @Override
   public String showMenu() {
     String s = "\n  What are you looking for today? \n"
-            + "1. Create a portfolio. \n"
+            + "1. Create an inflexible portfolio. \n"
             + "2. View composition of a portfolio. \n"
             + "3. Get total value of a portfolio on a specified date. \n"
-            + "4. Exit the program \n"
+            + "4. Create a flexible portfolio. \n"
+            + "5. Buy shares in a flexible portfolio. \n"
+            + "6. Sell shares of a flexible portfolio. \n"
+            + "7. Change commission value. \n"
+            + "8. Exit the program. \n"
             + "\n"
             + "Choose an option number: \n";
     return s;
@@ -92,5 +96,10 @@ public class ViewImpl implements View {
   public String displayErrorMessage(String error) {
 
     return error;
+  }
+
+  @Override
+  public String showPortfolioOptions(){
+    
   }
 }

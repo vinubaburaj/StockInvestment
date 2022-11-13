@@ -13,7 +13,7 @@ import model.Stocks;
  * This is done to check the functionality of controller
  * in isolation.
  */
-public class MockPortfolio implements Portfolio {
+abstract class MockPortfolio implements Portfolio {
 
   private final StringBuilder log;
   private final int uniqueCode;
@@ -36,8 +36,8 @@ public class MockPortfolio implements Portfolio {
     log.append(this.uniqueCode);
   }
 
-  @Override
-  public List<String[]> examinePortfolio(String portfolioName) {
+
+   List<String[]> examinePortfolio(String portfolioName) {
     log.append(portfolioName);
     log.append(uniqueCode);
     List<String[]> ls = new ArrayList<>();

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio>
+    <Portfolio-Name>flexport</Portfolio-Name>
+    <Stock>
+        <Shares-owned>5</Shares-owned>
+        <Stock-ticker>NFLX</Stock-ticker>
+        <Date>2022-11-02</Date>
+    </Stock>
+    <Stock>
+        <Shares-owned>6</Shares-owned>
+        <Stock-ticker>ETSY</Stock-ticker>
+        <Date>2022-11-02</Date>
+    </Stock>
+</Portfolio>

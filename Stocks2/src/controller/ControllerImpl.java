@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 import enums.stockTicker;
 import model.Portfolio;
+import model.PortfolioFlexible;
+import model.PortfolioImpl;
 import model.Stocks;
 import utility.UtilityClass;
 import view.View;
@@ -70,6 +72,7 @@ public class ControllerImpl implements Controller {
           break;
         }
 
+
         case 2: {
           this.out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
@@ -104,6 +107,47 @@ public class ControllerImpl implements Controller {
         }
 
         case 4: {
+          this.out.append(view.inputPortfolioName());
+          String portfolioName = scan.next();
+          if (UtilityClass.checkFileExists(portfolioName)) {
+            out.append(view.displayErrorMessage("Portfolio with name "
+                    + "already exists. Please choose another name."));
+          } else {
+            List<Stocks> stocks = createPortfolioController();
+            if (stocks.size() > 0) {
+              Portfolio flexiblePortfolio = new PortfolioImpl();
+              flexiblePortfolio.createPortfolio(stocks, portfolioName);
+              out.append(view.createSuccessfulMessage());
+            } else {
+              out.append(view.createUnsuccessfulMessage());
+            }
+
+          }
+          break;
+        }
+
+        case 5: {
+            purchaseSharesController(new PortfolioFlexible());
+          break;
+        }
+
+        case 6: {
+          // Need to add check to see if shares sold is greater than the value present in XML.
+
+          sellSharesController(new PortfolioFlexible());
+          // Sell shares of a portfolio.
+          break;
+        }
+
+        case 7: {
+          // Need to check for invalid commission values.
+
+          String stringCommission = scan.next();
+          changeCommissionValue(new PortfolioFlexible(),Float.parseFloat(stringCommission));
+          break;
+        }
+
+        case 8: {
           run = false;
           break;
         }
@@ -194,7 +238,7 @@ public class ControllerImpl implements Controller {
    */
   private void examinePortfolioController(String portfolioName,
                                           Portfolio portfolio) throws IOException {
-    List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
+    List<String[]> stocks = portfolio.examinePortfolio(portfolioName, false);
 
     View view = new ViewImpl();
     out.append(view.showPortfolio(stocks));
@@ -210,7 +254,7 @@ public class ControllerImpl implements Controller {
     boolean isValidDate = UtilityClass.checkDateValidity(date);
     View view = new ViewImpl();
     if (isValidDate) {
-      List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
+      List<String[]> stocks = portfolio.examinePortfolio(portfolioName, false);
       Double totalValue = portfolio.getTotalValue(stocks, date);
 
       out.append(view.showTotalValue(portfolioName, date, totalValue));
@@ -219,6 +263,130 @@ public class ControllerImpl implements Controller {
         out.append(view.showDateMessage(dateToday, lastHistoricDate));
       }
     }
+  }
+
+  private void purchaseSharesController(Portfolio portfolioFlexible) throws IOException {
+
+    boolean run = true;
+    View view = new ViewImpl();
+    this.out.append(view.inputPortfolioName());
+    String portfolioName = scan.next();
+    if (!UtilityClass.checkFileExists(portfolioName)) {
+      out.append(view.displayErrorMessage("Portfolio with name "
+              + portfolioName + " doesn't exist"));
+    }
+    else {
+      List<HashMap<String, String>> stocksAppended = new ArrayList<>();
+      while (run) {
+
+        this.out.append(view.showStockOptions());
+//        stockTicker stockChoice;
+        String stringStockChoice = scan.next();
+
+        int choice = UtilityClass.checkValidStock(stringStockChoice, "Quit");
+        int isNum = 0;
+        String stringNumberOfShares = "";
+        if (choice == 1) {
+          out.append(view.showNumberOfSharesMessage());
+          stringNumberOfShares = scan.next();
+          isNum = UtilityClass.checkIfInteger(stringNumberOfShares, "Quit");
+        }
+        switch (choice) {
+          case 1: {
+            if (isNum == 1) {
+              out.append(view.showDateMessage(dateToday, lastHistoricDate));
+              String stringDate = scan.next();
+              HashMap<String, String> stockDetail = new HashMap<>();
+              stockDetail.put("Ticker", stringStockChoice);
+              stockDetail.put("Shares", stringNumberOfShares);
+              stockDetail.put("Date", stringDate);
+              stocksAppended.add(stockDetail);
+            } else if (isNum == 2) {
+              run = false;
+            } else {
+              out.append(view.displayErrorMessage("Please enter a valid integer value for number of "
+                      + "stocks. Enter ticker again."));
+            }
+            break;
+          }
+          case 2: {
+            run = false;
+            break;
+          }
+          case 0: {
+            out.append(view.displayErrorMessage("Provided ticker is invalid\n"));
+            break;
+          }
+          default: {
+            out.append(view.displayErrorMessage("Invalid ticker.\n"));
+          }
+        }
+
+      }
+      ((PortfolioFlexible)portfolioFlexible).purchaseStocks(stocksAppended, portfolioName);
+    }
+  }
+
+  private void sellSharesController(Portfolio flexiblePortfolio) throws IOException {
+    boolean run = true;
+//    List<Stocks> stocks = new ArrayList<>();
+//    HashMap<stockTicker, Integer> uniqueTickers = new HashMap<>();
+    View view = new ViewImpl();
+    this.out.append(view.inputPortfolioName());
+    String portfolioName = scan.next();
+    if (!UtilityClass.checkFileExists(portfolioName)) {
+      out.append(view.displayErrorMessage("Portfolio with name "
+              + portfolioName + " doesn't exist"));
+    }
+    else {
+      while (run) {
+        this.out.append(view.showStockOptions());
+        stockTicker stockChoice;
+        String stringStockChoice = scan.next();
+        int choice = UtilityClass.checkValidStock(stringStockChoice, "Quit");
+        stockChoice = stockTicker.valueOf(stringStockChoice);
+        int isNum = 0;
+        String stringNumberOfShares = "";
+        if (choice == 1) {
+          out.append(view.showNumberOfSharesMessage());
+          stringNumberOfShares = scan.next();
+          isNum = UtilityClass.checkIfInteger(stringNumberOfShares, "Quit");
+        }
+        switch (choice) {
+          case 1: {
+            if (isNum == 1) {
+              out.append(view.showDateMessage(dateToday, lastHistoricDate));
+              String stringDate = scan.next();
+              ((PortfolioFlexible)flexiblePortfolio).sellStocks(stockChoice,
+                      Integer.parseInt(stringNumberOfShares),
+                      stringDate,portfolioName);
+            } else if (isNum == 2) {
+              run = false;
+            } else {
+              out.append(view.displayErrorMessage("Please enter a valid integer value for number of "
+                      + "stocks. Enter ticker again."));
+            }
+            break;
+          }
+          case 2: {
+            run = false;
+            break;
+          }
+          case 0: {
+            out.append(view.displayErrorMessage("Provided ticker is invalid\n"));
+            break;
+          }
+          default: {
+            out.append(view.displayErrorMessage("Invalid ticker.\n"));
+          }
+        }
+
+      }
+    }
+  }
+
+  private void changeCommissionValue(Portfolio flexiblePortfolio,float commission){
+    ((PortfolioFlexible)flexiblePortfolio).changeCommission(commission);
   }
 
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public interface Portfolio {
    * @param portfolioName the file name from which it needs
    *                      to retrieve the data.
    */
-  List<String[]> examinePortfolio(String portfolioName);
+  List<String[]> examinePortfolio(String portfolioName, boolean flexible) throws IOException;
 
   /**
    * Method that gets the total value of a portfolio on a particular date.
@@ -30,5 +32,5 @@ public interface Portfolio {
    * @param date   the date at which it gets the total
    *               value of the portfolio.
    */
-  Double getTotalValue(List<String[]> stocks, String date);
+  Double getTotalValue(List<String[]> stocks, String date) throws IOException;
 }

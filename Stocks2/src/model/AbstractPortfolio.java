@@ -1,6 +1,7 @@
 package model;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,32 +11,25 @@ import utility.WorkWithXML;
 
 abstract class AbstractPortfolio implements Portfolio {
 
-  public void createPortfolio(List<Stocks> stocks, String portfolioName) {
-    String lastDate = "2022-11-02";
+  public ArrayList<HashMap<String, String>> createPortfolioAbs(List<Stocks> stocks, String date, float commission) {
     ArrayList<HashMap<String, String>> stocksList = new ArrayList<>();
     for (Stocks stock : stocks) {
-      stock.fillStockData(lastDate);
+//      stock.fillStockData(date);
       HashMap<String, String> stockMap = new HashMap<>();
-      stockMap.put("Date", stock.getDate());
+      stockMap.put("Date", date);
       stockMap.put("Stock-ticker", stock.getTicker());
       stockMap.put("Shares-owned", String.valueOf(stock.getNumberOfShares()));
 
+      if(commission != -1){
+        stockMap.put("Commission", String.valueOf(commission));
+      }
       stocksList.add(stockMap);
     }
 
-    //    String absolutePath = System.getProperty("user.dir");
-    //    String osSeperator = System.getProperty("file.separator");
-    //    String finalPath = absolutePath + osSeperator + "allUserPortfolios" + osSeperator
-    //            + "user1_portfolios" + osSeperator
-    //            + portfolioName + ".xml";
-
-    String finalPath = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
-
-    WorkWithXML p = new WorkWithXML(finalPath, portfolioName);
-    p.create(stocksList);
+    return stocksList;
   }
 
-  public List<String[]> examinePortfolio(String portfolioName) {
+  public List<String[]> examinePortfolio(String portfolioName, boolean flexible) throws IOException {
     //    String absolutePath = System.getProperty("user.dir");
     //    String osSeperator = System.getProperty("file.separator");
     //    String path = absolutePath + osSeperator + "allUserPortfolios" + osSeperator
@@ -44,7 +38,7 @@ abstract class AbstractPortfolio implements Portfolio {
     String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
     WorkWithXML p = new WorkWithXML(path, portfolioName);
 
-    List<String[]> stocksRaw = p.read();
+    List<String[]> stocksRaw = p.read(flexible);
     List<String[]> stocks = new ArrayList<>();
 
     for(String[] s : stocksRaw){
@@ -54,7 +48,7 @@ abstract class AbstractPortfolio implements Portfolio {
         String numberOfShares = s[1];
         String date = s[2];
         Stocks stock = new Stocks(stockTickerVal, Integer.parseInt(numberOfShares));
-        stock.fillStockData(date);
+        stock.fillStockData(date, flexible);
 
         String[] stockDisplay = new String[5];
         stockDisplay[0] = String.valueOf(stockTickerVal);
@@ -66,18 +60,6 @@ abstract class AbstractPortfolio implements Portfolio {
       }
     }
     return stocks;
-  }
-
-  public Double getTotalValue(List<String[]> stocks, String date) {
-    // function to get the total value of a portfolio.
-    double totalValue = 0;
-    for (String[] stock : stocks) {
-      Stocks s = new Stocks(stockTicker.valueOf(stock[0]), Integer.parseInt(stock[2]));
-      if (s.fillStockData(date)) {
-        totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
-      }
-    }
-    return totalValue;
   }
 
 }

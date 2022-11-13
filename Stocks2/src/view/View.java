@@ -79,4 +79,12 @@ public interface View {
    */
   String displayErrorMessage(String error);
 
+  /**
+   * Method that displays the different Portfolio types a user
+   * can work with in this program.
+   *
+   * @return the options of type of portfolios supported.
+   */
+  String showPortfolioOptions();
+
 }

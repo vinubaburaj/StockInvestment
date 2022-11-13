@@ -28,6 +28,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import model.PortfolioImpl;
+import utility.XMLHelper.DOMHelper;
 
 public class WorkWithXML implements WorkWithFileTypes{
 
@@ -58,7 +59,8 @@ public class WorkWithXML implements WorkWithFileTypes{
 
       for(HashMap<String, String> i: stockData){
         Element stockElement = doc.createElement("Stock");
-
+        stockElement.setAttribute("ticker", i.get("Stock-ticker"));
+        stockElement.setAttribute("date", i.get("Date"));
         for (Map.Entry<String, String> j : i.entrySet()) {
           Element c = doc.createElement(j.getKey());
           Text textNode = doc.createTextNode(j.getValue());
@@ -84,13 +86,11 @@ public class WorkWithXML implements WorkWithFileTypes{
   }
 
 
-  public List<String[]> read(){
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  public List<String[]> read(boolean flexible){
     List<String[]> stocks = new ArrayList<>();
 
     try {
-      DocumentBuilder db = dbf.newDocumentBuilder();
-      Document doc = db.parse(new File(this.path));
+      Document doc = DOMHelper.getDocument(path);
       doc.getDocumentElement().normalize();
       NodeList list = doc.getElementsByTagName("Stock");
 
@@ -99,19 +99,55 @@ public class WorkWithXML implements WorkWithFileTypes{
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           Element element = (Element) node;
           String ticker = element.getElementsByTagName("Stock-ticker").item(0).getTextContent();
-          String numberOfShares = element.getElementsByTagName("Shares-owned").item(0).getTextContent();
+          String numberOfShares = element.getElementsByTagName("Number-of-shares").item(0).getTextContent();
           String date = element.getElementsByTagName("Date").item(0).getTextContent();
 
-          String[] stock = new String[3];
-          stock[0] = ticker;
-          stock[1] = numberOfShares;
-          stock[2] = date;
-          stocks.add(stock);
+          if(!flexible){
+            String[] stock = new String[3];
+            stock[0] = ticker;
+            stock[1] = numberOfShares;
+            stock[2] = date;
+            stocks.add(stock);
+          }
+          if(flexible){
+            String commission = element.getElementsByTagName("Commission").item(0).getTextContent();
+            String[] stock = new String[4];
+            stock[0] = ticker;
+            stock[1] = numberOfShares;
+            stock[2] = date;
+            stock[3] = commission;
+            stocks.add(stock);
+          }
         }
       }
-    } catch (ParserConfigurationException | SAXException | IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return stocks;
+  }
+
+  public boolean update(List<HashMap<String, String>> stocks){
+    try {
+      Document d = DOMHelper.getDocument(path);
+      Element portfolio = d.getDocumentElement();
+
+      for(HashMap<String, String> i: stocks){
+        Element stock = d.createElement("Stock");
+        stock.setAttribute("ticker", i.get("Stock-ticker"));
+        stock.setAttribute("date", i.get("Date"));
+
+        for (Map.Entry<String, String> j : i.entrySet()) {
+          Element c = d.createElement(j.getKey());
+          Text textNode = d.createTextNode(j.getValue());
+          c.appendChild(textNode);
+          stock.appendChild(c);
+        }
+        portfolio.appendChild(stock);
+        DOMHelper.saveXMLContent(d, path);
+      }
+    } catch (Exception ex) {
+      return false;
+    }
+    return true;
   }
 }

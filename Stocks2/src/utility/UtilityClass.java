@@ -1,6 +1,8 @@
 package utility;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -77,7 +79,7 @@ public final class UtilityClass {
    *
    * @param date the date to check
    */
-  public static boolean checkDateValidity(String date) {
+  public static boolean checkDateValidity(String date) throws IOException {
     String absolutePath = System.getProperty("user.dir");
     String osSeperator = System.getProperty("file.separator");
     String finalPath = absolutePath + osSeperator + "dates" + osSeperator + "dates.csv";
