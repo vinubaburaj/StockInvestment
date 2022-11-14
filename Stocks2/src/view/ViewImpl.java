@@ -1,7 +1,9 @@
 package view;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import enums.stockTicker;
 
@@ -11,15 +13,18 @@ import enums.stockTicker;
 public class ViewImpl implements View {
   @Override
   public String showMenu() {
-    String s = "\n  What are you looking for today? \n"
+    String s = "\n  You can choose the following options for an inflexible portfolio: \n"
             + "1. Create an inflexible portfolio. \n"
             + "2. View composition of a portfolio. \n"
             + "3. Get total value of a portfolio on a specified date. \n"
+            + "\n You can choose the following options for a flexible portfolio: \n"
             + "4. Create a flexible portfolio. \n"
             + "5. Buy shares in a flexible portfolio. \n"
             + "6. Sell shares of a flexible portfolio. \n"
-            + "7. Change commission value. \n"
-            + "8. Exit the program. \n"
+            + "7. View composition of a flexible portfolio. \n"
+            + "8. View cost basis of a portfolio. \n"
+            + "9. Change commission value. \n"
+            + "\n10. Exit the program. \n"
             + "\n"
             + "Choose an option number: \n";
     return s;
@@ -56,16 +61,21 @@ public class ViewImpl implements View {
   }
 
   @Override
-  public String showPortfolio(List<String[]> stocks) {
+  public String showPortfolio(HashMap<String,Integer> stocks) {
 
     StringBuilder sb = new StringBuilder();
     sb.append("\nPortfolio contains the following stocks and its details: \n");
-    for (String[] stock : stocks) {
-      sb.append("\n").append("Stock Name: ").append(stock[1]).append("\n")
-              .append("Number of shares purchased: ").append(stock[2]).append("\n")
-              .append("Value purchased at: ").append(stock[3]).append("\n").
-              append("Date purchased on: ").append(stock[4]).append("\n");
+//    for (String[] stock : stocks) {
+//      sb.append("\n").append("Stock Name: ").append(stock[1]).append("\n")
+//              .append("Number of shares purchased: ").append(stock[2]).append("\n")
+//              .append("Value purchased at: ").append(stock[3]).append("\n").
+//              append("Date purchased on: ").append(stock[4]).append("\n");
+//    }
+    for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
+//      Stocks stock = new Stocks(stockTicker.valueOf(entry.getKey()), entry.getValue());
+      sb.append(entry.getKey() + " : " + entry.getValue()+ "\n");
     }
+
     return sb.toString();
   }
 
@@ -100,6 +110,6 @@ public class ViewImpl implements View {
 
   @Override
   public String showPortfolioOptions(){
-    
+    return null;
   }
 }

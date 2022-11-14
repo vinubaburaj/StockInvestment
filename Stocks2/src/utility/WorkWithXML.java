@@ -86,14 +86,12 @@ public class WorkWithXML implements WorkWithFileTypes{
   }
 
 
-  public List<String[]> read(boolean flexible){
-    List<String[]> stocks = new ArrayList<>();
-
+  public List<HashMap<String, String>> read(){
+    List<HashMap<String, String>> stocks = new ArrayList<>();
     try {
       Document doc = DOMHelper.getDocument(path);
       doc.getDocumentElement().normalize();
       NodeList list = doc.getElementsByTagName("Stock");
-
       for (int temp = 0; temp < list.getLength(); temp++) {
         Node node = list.item(temp);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -101,23 +99,15 @@ public class WorkWithXML implements WorkWithFileTypes{
           String ticker = element.getElementsByTagName("Stock-ticker").item(0).getTextContent();
           String numberOfShares = element.getElementsByTagName("Number-of-shares").item(0).getTextContent();
           String date = element.getElementsByTagName("Date").item(0).getTextContent();
-
-          if(!flexible){
-            String[] stock = new String[3];
-            stock[0] = ticker;
-            stock[1] = numberOfShares;
-            stock[2] = date;
-            stocks.add(stock);
+          NodeList commission = element.getElementsByTagName("Commission");
+          HashMap<String, String> stock = new HashMap<>();
+          stock.put("Stock ticker", ticker);
+          stock.put("Number of shares", numberOfShares);
+          stock.put("Date of transaction", date);
+          if(commission.getLength() > 0){
+            stock.put("Commission",element.getElementsByTagName("Commission").item(0).getTextContent());
           }
-          if(flexible){
-            String commission = element.getElementsByTagName("Commission").item(0).getTextContent();
-            String[] stock = new String[4];
-            stock[0] = ticker;
-            stock[1] = numberOfShares;
-            stock[2] = date;
-            stock[3] = commission;
-            stocks.add(stock);
-          }
+          stocks.add(stock);
         }
       }
     } catch (Exception e) {

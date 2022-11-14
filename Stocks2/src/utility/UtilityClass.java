@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import enums.stockTicker;
 
@@ -68,7 +71,7 @@ public final class UtilityClass {
 //    String path = absolutePath + osSeperator + "allUserPortfolios" + osSeperator
 //            + "user1_portfolios" + osSeperator
 //            + portfolioName + ".xml";
-    String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
+    String path = "src/allUserPortfolios/flexiblePortfolios/" + portfolioName + ".xml";
     File filePath = new File(path);
     return filePath.exists();
   }
@@ -120,5 +123,27 @@ public final class UtilityClass {
       return false;
     }
     return n >= lowerLimit && n <= higherLimit;
+  }
+
+  public static boolean checkDateChronology(String stockChoice,String date,
+                                              String portfolioName) throws IOException{
+    String path = "src/allUserPortfolios/flexiblePortfolios/" + portfolioName + ".xml";
+    WorkWithFileTypes w = new WorkWithXML(path, portfolioName);
+    List<HashMap<String, String>> existingStocks = w.read();
+//    existingStocks = w.read();
+    LocalDate inputDate = LocalDate.parse(date);
+    LocalDate today = LocalDate.now();
+    if(inputDate.compareTo(today) >0){
+      return false;
+    }
+//    System.out.println(today);
+    for(HashMap<String, String> stock : existingStocks){
+      LocalDate stockDate = LocalDate.parse(stock.get("Date of transaction"));
+      if(stockChoice.equals(stock.get("Stock ticker")) &&
+              stockDate.compareTo(inputDate) > 0){
+        return false;
+      }
+    }
+    return true;
   }
 }

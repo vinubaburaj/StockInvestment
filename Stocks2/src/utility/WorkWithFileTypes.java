@@ -8,5 +8,5 @@ public interface WorkWithFileTypes {
 
   void create(ArrayList<HashMap<String, String>> stockData);
 
-  List<String[]> read(boolean flexible);
+  List<HashMap<String, String>> read();
 }
