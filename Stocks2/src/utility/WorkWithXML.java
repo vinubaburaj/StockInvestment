@@ -5,10 +5,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +26,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import model.PortfolioImpl;
-import utility.XMLHelper.DOMHelper;
 
 public class WorkWithXML implements WorkWithFileTypes{
 
@@ -50,6 +47,8 @@ public class WorkWithXML implements WorkWithFileTypes{
 
       //create root node
       Element root = doc.createElement("Portfolio");
+      root.setAttribute("creation-date", stockData.get(0).get("Date"));
+
 
       Element name = doc.createElement("Portfolio-Name");
       Text nameText = doc.createTextNode(this.name);
@@ -59,8 +58,6 @@ public class WorkWithXML implements WorkWithFileTypes{
 
       for(HashMap<String, String> i: stockData){
         Element stockElement = doc.createElement("Stock");
-        stockElement.setAttribute("ticker", i.get("Stock-ticker"));
-        stockElement.setAttribute("date", i.get("Date"));
         for (Map.Entry<String, String> j : i.entrySet()) {
           Element c = doc.createElement(j.getKey());
           Text textNode = doc.createTextNode(j.getValue());
@@ -70,28 +67,29 @@ public class WorkWithXML implements WorkWithFileTypes{
         root.appendChild(stockElement);
       }
       doc.appendChild(root);
-      DOMSource source = new DOMSource(doc);
       File f = new File(this.path);
-      Result result = new StreamResult(f);
-      TransformerFactory transformerFactory = TransformerFactory.newInstance();
-      Transformer transformer = transformerFactory.newTransformer();
-      transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.transform(source, result);
+      saveXMLContent(doc, path);
+
     } catch (ParserConfigurationException ex) {
       Logger.getLogger(PortfolioImpl.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (TransformerException e) {
-      throw new RuntimeException(e);
     }
+  }
+
+  public String getFileCreationDate(){
+    Document doc = getDocument(path);
+    Element portfolio = doc.getDocumentElement();
+    return portfolio.getAttribute("creation-date");
   }
 
 
   public List<HashMap<String, String>> read(){
     List<HashMap<String, String>> stocks = new ArrayList<>();
+
     try {
-      Document doc = DOMHelper.getDocument(path);
+      Document doc = getDocument(path);
       doc.getDocumentElement().normalize();
       NodeList list = doc.getElementsByTagName("Stock");
+
       for (int temp = 0; temp < list.getLength(); temp++) {
         Node node = list.item(temp);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -100,6 +98,7 @@ public class WorkWithXML implements WorkWithFileTypes{
           String numberOfShares = element.getElementsByTagName("Number-of-shares").item(0).getTextContent();
           String date = element.getElementsByTagName("Date").item(0).getTextContent();
           NodeList commission = element.getElementsByTagName("Commission");
+
           HashMap<String, String> stock = new HashMap<>();
           stock.put("Stock ticker", ticker);
           stock.put("Number of shares", numberOfShares);
@@ -118,13 +117,11 @@ public class WorkWithXML implements WorkWithFileTypes{
 
   public boolean update(List<HashMap<String, String>> stocks){
     try {
-      Document d = DOMHelper.getDocument(path);
+      Document d = getDocument(path);
       Element portfolio = d.getDocumentElement();
 
       for(HashMap<String, String> i: stocks){
         Element stock = d.createElement("Stock");
-        stock.setAttribute("ticker", i.get("Stock-ticker"));
-        stock.setAttribute("date", i.get("Date"));
 
         for (Map.Entry<String, String> j : i.entrySet()) {
           Element c = d.createElement(j.getKey());
@@ -133,11 +130,36 @@ public class WorkWithXML implements WorkWithFileTypes{
           stock.appendChild(c);
         }
         portfolio.appendChild(stock);
-        DOMHelper.saveXMLContent(d, path);
+        saveXMLContent(d, path);
       }
     } catch (Exception ex) {
       return false;
     }
     return true;
+  }
+
+  private static Document getDocument(String path_to_file) {
+    Document d = null;
+    try {
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      DocumentBuilder db = dbf.newDocumentBuilder();
+      d = db.parse(path_to_file);
+    } catch (Exception ex) {
+      d = null;
+    }
+    return d;
+  }
+
+  private static void saveXMLContent(Document d, String path_to_file) {
+    try {
+      TransformerFactory tff = TransformerFactory.newInstance();
+      Transformer tf = tff.newTransformer();
+      tf.setOutputProperty(OutputKeys.INDENT, "yes");
+      DOMSource ds = new DOMSource(d);
+      StreamResult sr = new StreamResult(path_to_file);
+      tf.transform(ds, sr);
+    } catch (Exception ex) {
+      System.out.println(ex.getMessage());
+    }
   }
 }

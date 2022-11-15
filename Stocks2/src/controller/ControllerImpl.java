@@ -47,7 +47,7 @@ public class ControllerImpl implements Controller {
       int choice;
 
       String stringChoice = scan.next();
-      while (!UtilityClass.checkValidNumberOption(stringChoice, 1, 10)) {
+      while (!UtilityClass.checkValidNumberOption(stringChoice, 1, 11)) {
         out.append(view.displayErrorMessage("Invalid entry. Please choose "
                 + "a number to enter your choice."));
         stringChoice = scan.next();
@@ -153,21 +153,28 @@ public class ControllerImpl implements Controller {
         }
 
         case 8: {
-          // View cost basis of a portfolio.
-          findCostBasis();
+          // Get total value of a portfolio
+
+          getTotalValueFlexiblePortfolio();
           break;
         }
 
 
         case 9: {
-          // Need to check for invalid commission values.
+          // Find cost basis
+          findCostBasis();
+          break;
+        }
 
+
+        case 10: {
+          // Need to check for invalid commission values.
           String stringCommission = scan.next();
           changeCommissionValue(new PortfolioFlexible(), Float.parseFloat(stringCommission));
           break;
         }
 
-        case 10: {
+        case 11: {
           run = false;
           break;
         }
@@ -203,7 +210,7 @@ public class ControllerImpl implements Controller {
       if (choice == 1) {
         out.append(view.showNumberOfSharesMessage());
         stringNumberOfShares = scan.next();
-        isNum = UtilityClass.checkIfInteger(stringNumberOfShares, "Quit");
+        isNum = UtilityClass.checkIfPositiveInteger(stringNumberOfShares, "Quit");
       }
       switch (choice) {
         case 1: {
@@ -312,18 +319,33 @@ public class ControllerImpl implements Controller {
         if (choice == 1) {
           out.append(view.showNumberOfSharesMessage());
           stringNumberOfShares = scan.next();
-          isNum = UtilityClass.checkIfInteger(stringNumberOfShares, "Quit");
+          isNum = UtilityClass.checkIfPositiveInteger(stringNumberOfShares, "Quit");
         }
         switch (choice) {
           case 1: {
             if (isNum == 1) {
               out.append(view.showDateMessage(dateToday, lastHistoricDate));
               String stringDate = scan.next();
-              HashMap<String, String> stockDetail = new HashMap<>();
-              stockDetail.put("Stock-ticker", stringStockChoice);
-              stockDetail.put("Shares-owned", stringNumberOfShares);
-              stockDetail.put("Date", stringDate);
-              stocksAppended.add(stockDetail);
+//              System.out.println("Line 329");
+              if (UtilityClass.checkDateChronology(stringStockChoice, stringDate,
+                      portfolioName)) {
+                if((UtilityClass.checkDateBeforeCreatedDate(portfolioName, stringDate))){
+                  out.append("Cannot purchase share before the creation date of portfolio.\n");
+                }
+                else {
+//                System.out.println("Line332");
+                  HashMap<String, String> stockDetail = new HashMap<>();
+                  stockDetail.put("Date", stringDate);
+                  stockDetail.put("Stock-ticker", stringStockChoice);
+                  stockDetail.put("Number-of-shares", stringNumberOfShares);
+                  stocksAppended.add(stockDetail);
+                }
+              }
+              else {
+//                System.out.println("Line340");
+                out.append("A share can be bought only for a date after the most recent " +
+                        "purchase/sale of stock.");
+              }
             } else if (isNum == 2) {
               run = false;
             } else {
@@ -346,7 +368,12 @@ public class ControllerImpl implements Controller {
         }
 
       }
-      ((PortfolioFlexible) portfolioFlexible).purchaseStocks(stocksAppended, portfolioName);
+      if (stocksAppended.size() > 0) {
+        ((PortfolioFlexible) portfolioFlexible).purchaseStocks(stocksAppended, portfolioName);
+      }
+      else{
+        System.out.println("\nNo stocks purchased.\n");
+      }
     }
   }
 
@@ -371,7 +398,7 @@ public class ControllerImpl implements Controller {
         if (choice == 1) {
           out.append(view.showNumberOfSharesMessage());
           stringNumberOfShares = scan.next();
-          isNum = UtilityClass.checkIfInteger(stringNumberOfShares, "Quit");
+          isNum = UtilityClass.checkIfPositiveInteger(stringNumberOfShares, "Quit");
         }
         switch (choice) {
           case 1: {
@@ -387,7 +414,8 @@ public class ControllerImpl implements Controller {
               }
               else{
                 // Add logic to stop program from ending.
-                System.out.println("Invalid date entered.");
+                out.append("A share can be sold only for a date after the most recent " +
+                        "purchase/sale of stock.");
               }
             } else if (isNum == 2) {
               run = false;
@@ -430,9 +458,43 @@ public class ControllerImpl implements Controller {
     else{
       out.append(view.showDateMessage(dateToday, lastHistoricDate));
       String stringDate = scan.next();
-      double cost = ((PortfolioFlexible) flexiblePortfolio).findCostBasis(stringDate,
-              portfolioName);
-      this.out.append("Cost is: " + String.valueOf(cost));
+      if(UtilityClass.checkDateBeforeCreatedDate(portfolioName,stringDate) ||
+              UtilityClass.checkDateAfterToday(portfolioName,stringDate)){
+        this.out.append("\nProvided date is not between created portfolio date and today\n");
+      }
+      else {
+        double cost = ((PortfolioFlexible) flexiblePortfolio).findCostBasis(stringDate,
+                portfolioName);
+        this.out.append("Cost is: $" + cost);
+      }
+    }
+  }
+
+  private void getTotalValueFlexiblePortfolio() throws IOException{
+    Portfolio flexiblePortfolio = new PortfolioFlexible();
+    View view = new ViewImpl();
+    this.out.append(view.inputPortfolioName());
+    String portfolioName = scan.next();
+    if (!UtilityClass.checkFileExists(portfolioName)) {
+      out.append(view.displayErrorMessage("Portfolio with name "
+              + portfolioName + " doesn't exist"));
+    }
+    else{
+      out.append(view.showDateMessage(dateToday, lastHistoricDate));
+      double totalValue;
+      String stringDate = scan.next();
+      if(UtilityClass.checkDateAfterToday(portfolioName, stringDate)){
+        this.out.append("\nProvided date is after today's date\n");
+        return;
+      }
+//      if(UtilityClass.checkDateBeforeCreatedDate(portfolioName, stringDate)){
+//        totalValue = 0.00;
+//      }
+//      else {
+        totalValue = flexiblePortfolio.getTotalValue(portfolioName, stringDate);
+        // Need to add this part to view.
+//      }
+      this.out.append("\nTotal value: $" + totalValue);
     }
   }
 }

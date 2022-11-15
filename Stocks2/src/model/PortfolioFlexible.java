@@ -13,7 +13,7 @@ import utility.WorkWithXML;
 
 public class PortfolioFlexible extends AbstractPortfolio {
 
-  private float commission = 10;
+  private static float commission = 10;
 
   private final String finalPath = "src/allUserPortfolios/flexiblePortfolios/";
 
@@ -70,23 +70,26 @@ public class PortfolioFlexible extends AbstractPortfolio {
     double totalCommission = 0;
     List<HashMap<String, String>> stocks = p.read();
     LocalDate dateFormatted = LocalDate.parse(date);
-
     double sumOfAllPurchased = 0;
-
     for (int i = 0; i < stocks.size(); i++) {
-      totalCommission = totalCommission + Double.parseDouble(stocks.get(i).get("Commission"));
-      Stocks stock = new Stocks(stockTicker.valueOf(stocks.get(i).get("Stock ticker")),
-              Integer.parseInt(stocks.get(i).get("Number of shares")));
-      stock.fillStockData(stocks.get(i).get("Date of transaction"), true);
-
-      int isBefore = dateFormatted.compareTo(LocalDate.parse(stock.getDate()));
-      if (isBefore == 1 || isBefore == 0) {
-        sumOfAllPurchased = sumOfAllPurchased + (stock.getNumberOfShares()
-                * Double.parseDouble(stock.getValueOfShare()));
+      int isBefore = dateFormatted.compareTo(LocalDate.parse(stocks.get(i).get("Date of transaction")));
+      if (isBefore >= 0) {
+        totalCommission = totalCommission + Double.parseDouble(stocks.get(i).get("Commission"));
+        System.out.println("L78: " + Integer.parseInt(stocks.get(i).get("Number of shares")));
+        if(Integer.parseInt(stocks.get(i).get("Number of shares")) > 0){
+          Stocks stock = new Stocks(stockTicker.valueOf(stocks.get(i).get("Stock ticker")),
+                  Integer.parseInt(stocks.get(i).get("Number of shares")));
+          stock.fillStockData(stocks.get(i).get("Date of transaction"), true);
+//          System.out.println("Line 82 " + stock.getNumberOfShares());
+          sumOfAllPurchased = sumOfAllPurchased + (stock.getNumberOfShares()
+                  * Double.parseDouble(stock.getValueOfShare()));
+        }
       }
     }
     return totalCommission + sumOfAllPurchased;
   }
+
+
 
   public Double getTotalValue(String portfolioName, String date) throws IOException {
     double totalValue = 0;
@@ -117,8 +120,9 @@ public class PortfolioFlexible extends AbstractPortfolio {
     return totalValue;
   }
 
+
   public void changeCommission(float c) {
-    this.commission = c;
+    commission = c;
   }
 
 }

@@ -14,7 +14,6 @@ abstract class AbstractPortfolio implements Portfolio {
   public ArrayList<HashMap<String, String>> createPortfolioAbs(List<Stocks> stocks, String date, float commission) {
     ArrayList<HashMap<String, String>> stocksList = new ArrayList<>();
     for (Stocks stock : stocks) {
-//      stock.fillStockData(date);
       HashMap<String, String> stockMap = new HashMap<>();
       stockMap.put("Date", date);
       stockMap.put("Stock-ticker", stock.getTicker());

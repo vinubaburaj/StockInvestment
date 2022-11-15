@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class ReadFromAlphaVantage extends AbsGetDataFromSrc {
 
-  public final String apiKey = "W0M1JOKC82EZEQA8";
+  public final String apiKey = "KFKR6IY1AUVCVWVV";
   public String stockSymbol;
 
   public URL url;

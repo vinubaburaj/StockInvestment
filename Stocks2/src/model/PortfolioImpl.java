@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import enums.stockTicker;
+import utility.WorkWithFileTypes;
 import utility.WorkWithXML;
 
 /**
@@ -40,13 +41,15 @@ public class PortfolioImpl extends AbstractPortfolio{
 
   public Double getTotalValue(String portfolioName, String date) throws IOException {
     double totalValue = 0;
-//    for (HashMap<String, String> stock : stocks) {
-//      Stocks s = new Stocks(stockTicker.valueOf(stock.get("Stock ticker")),
-//              Integer.parseInt(stock.get("Number of shares")));
-//      if (s.fillStockData(date, false)) {
-//        totalValue += Double.parseDouble(s.getValueOfShare()) * s.getNumberOfShares();
-//      }
-//    }
+    WorkWithFileTypes p = new WorkWithXML(this.finalPath + portfolioName
+            + ".xml", portfolioName);
+    List<HashMap<String, String>> stockData = p.read();
+    for(HashMap<String, String> s: stockData){
+      Stocks stock = new Stocks(stockTicker.valueOf(s.get("Stock ticker")),
+              Integer.parseInt(s.get("Number of shares")));
+      stock.fillStockData(date, false);
+      totalValue += Double.parseDouble(stock.getValueOfShare()) * stock.getNumberOfShares();
+    }
     return totalValue;
   }
 
