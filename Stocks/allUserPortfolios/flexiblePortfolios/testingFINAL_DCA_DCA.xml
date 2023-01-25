@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DCA>
+            
+    
+    <Finished>true</Finished>
+            
+    
+    <Last-updated>2022-07-06</Last-updated>
+            
+    
+    <Total>2000</Total>
+            
+    
+    <Start>2022-03-03</Start>
+            
+    
+    <End>2022-07-07</End>
+            
+    
+    <Frequency>20</Frequency>
+            
+    
+    <Proportions>
+                        
+        
+        <MSFT>1000.0</MSFT>
+                        
+        
+        <IBM>1000.0</IBM>
+                    
+    
+    </Proportions>
+        
+
+</DCA>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio creation-date="2022-01-01">
+                
+    
+    
+    <Portfolio-Name>testingFINAL</Portfolio-Name>
+            
+    
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>20.0</Commission>
+                        
+        
+        <Date>2022-02-02</Date>
+                        
+        
+        <Number-of-shares>20</Number-of-shares>
+                    
+    
+    </Stock>
+        
+    
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-03-03</Date>
+                
+        <Number-of-shares>3.38</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-03-03</Date>
+                
+        <Number-of-shares>7.94</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-03-23</Date>
+                
+        <Number-of-shares>3.34</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-03-23</Date>
+                
+        <Number-of-shares>7.79</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-04-12</Date>
+                
+        <Number-of-shares>3.55</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-04-12</Date>
+                
+        <Number-of-shares>7.94</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-05-02</Date>
+                
+        <Number-of-shares>3.52</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-05-02</Date>
+                
+        <Number-of-shares>7.52</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-05-23</Date>
+                
+        <Number-of-shares>3.84</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-05-23</Date>
+                
+        <Number-of-shares>7.62</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-06-13</Date>
+                
+        <Number-of-shares>4.13</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-06-13</Date>
+                
+        <Number-of-shares>7.4</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>MSFT</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-07-05</Date>
+                
+        <Number-of-shares>3.8</Number-of-shares>
+            
+    </Stock>
+        
+    <Stock>
+                
+        <Stock-ticker>IBM</Stock-ticker>
+                
+        <Commission>20.0</Commission>
+                
+        <Date>2022-07-05</Date>
+                
+        <Number-of-shares>7.27</Number-of-shares>
+            
+    </Stock>
+    
+    <Stock>
+        <Stock-ticker>ETSY</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-09</Date>
+        <Number-of-shares>0.09</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>DASH</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-09</Date>
+        <Number-of-shares>0.62</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>ETSY</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-16</Date>
+        <Number-of-shares>0.09</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>DASH</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-16</Date>
+        <Number-of-shares>0.68</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>ETSY</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-23</Date>
+        <Number-of-shares>0.1</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>DASH</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-23</Date>
+        <Number-of-shares>0.77</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>ETSY</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-30</Date>
+        <Number-of-shares>0.1</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>DASH</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-09-30</Date>
+        <Number-of-shares>0.81</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>ETSY</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-10-07</Date>
+        <Number-of-shares>0.09</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>DASH</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-10-07</Date>
+        <Number-of-shares>0.81</Number-of-shares>
+    </Stock>
+</Portfolio>

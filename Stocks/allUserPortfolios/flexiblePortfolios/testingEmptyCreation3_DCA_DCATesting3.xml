@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DCA>
+    <Finished>false</Finished>
+    <Last-updated>NA</Last-updated>
+    <Total>2000</Total>
+    <Start>2022-12-12</Start>
+    <End>2023-12-08</End>
+    <Frequency>1</Frequency>
+    <Proportions>
+        <MSFT>1000.0</MSFT>
+        <NFLX>400.0</NFLX>
+        <MS>600.0</MS>
+    </Proportions>
+</DCA>

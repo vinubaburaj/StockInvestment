@@ -1,7 +1,10 @@
 package model;
 
+import java.io.IOException;
+
 import enums.stockTicker;
 import utility.ReadCSVs;
+import utility.ReadFromAlphaVantage;
 
 /**
  * This class represents a stock at a particular date.
@@ -9,7 +12,7 @@ import utility.ReadCSVs;
 public class Stocks {
   stockTicker stockSymbol;
   String date;
-  int numberOfShares;
+  double numberOfShares;
   String valueOfShare;
 
   /**
@@ -19,7 +22,7 @@ public class Stocks {
    * @param ticker         the ticker value of this stock or the symbol of the stock.
    * @param numberOfShares number of shares of this stock.
    */
-  public Stocks(stockTicker ticker, int numberOfShares) {
+  public Stocks(stockTicker ticker, double numberOfShares) {
     this.stockSymbol = ticker;
     this.numberOfShares = numberOfShares;
   }
@@ -28,10 +31,22 @@ public class Stocks {
    * Method that fetches the data of a stock from a file and returns true if
    * data was found and false otherwise.
    */
-  public boolean fillStockData(String date) {
-    String pathToFile = "src/stocksData_csv/daily_" + this.stockSymbol + ".csv";
-    ReadCSVs read = new ReadCSVs(pathToFile);
-    String[] data = read.getDataByDate(date);
+  public boolean fillStockData(String date, boolean flexible) throws IOException {
+    String[] data;
+    if (!flexible) {
+      String absolutePath = System.getProperty("user.dir");
+      String osSeperator = System.getProperty("file.separator");
+      String finalPath = absolutePath + osSeperator + "stocksData_csv" + osSeperator + "daily_"
+              + this.stockSymbol + ".csv";
+
+      ReadCSVs read = new ReadCSVs(finalPath);
+      data = read.getDataByDate(date);
+    } else {
+      ReadFromAlphaVantage read =
+              new ReadFromAlphaVantage(this.getTicker(), "TIME_SERIES_DAILY");
+      data = read.getDataByDate(date);
+    }
+
     if (data.length == 6) {
       this.setDate(date);
       this.setValueOfShare(data[4]);
@@ -51,7 +66,7 @@ public class Stocks {
   /**
    * Method that fetches the number of shares of the stock object.
    */
-  int getNumberOfShares() {
+  double getNumberOfShares() {
     return this.numberOfShares;
   }
 

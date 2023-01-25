@@ -16,7 +16,7 @@ import view.View;
 import view.ViewImpl;
 
 /**
- * The ControllerImpl bridges the gap between a model and view.
+ * The controller bridges the gap between a model and view.
  * It delegates the task of showing output for the user to the view
  * and the working of the functionalities like(in this case) getting
  * total value, examining portfolio, and creating portfolios to the model.
@@ -24,8 +24,7 @@ import view.ViewImpl;
 public class ControllerImpl implements Controller {
   private static final LocalDate dateToday = LocalDate.parse("2022-11-02");
   private static final LocalDate lastHistoricDate = LocalDate.parse("2022-06-13");
-  final Readable in;
-  final Appendable out;
+  private final Appendable out;
   Scanner scan;
 
   /**
@@ -33,9 +32,8 @@ public class ControllerImpl implements Controller {
    * the Readable, Appendable and Scanner object.
    */
   public ControllerImpl(Readable in, Appendable out) {
-    this.in = in;
     this.out = out;
-    this.scan = new Scanner(this.in);
+    this.scan = new Scanner(in);
   }
 
   @Override
@@ -43,11 +41,11 @@ public class ControllerImpl implements Controller {
     View view = new ViewImpl();
     boolean run = true;
     while (run) {
-      out.append(view.showMenu());
+      out.append(view.showInflexiblePortfolioMenu());
       int choice;
 
       String stringChoice = scan.next();
-      while (!UtilityClass.checkValidNumberOption(stringChoice, 1, 4)) {
+      while (!UtilityClass.checkValidNumberOption(stringChoice, 1, 11)) {
         out.append(view.displayErrorMessage("Invalid entry. Please choose "
                 + "a number to enter your choice."));
         stringChoice = scan.next();
@@ -57,8 +55,8 @@ public class ControllerImpl implements Controller {
         case 1: {
           this.out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
-          if (UtilityClass.checkFileExists(portfolioName)) {
-            out.append(view.displayErrorMessage("\nPortfolio with name "
+          if (UtilityClass.checkFileExists(portfolioName, false)) {
+            out.append(view.displayErrorMessage("Portfolio with name "
                     + "already exists. Please choose another name."));
           } else {
             List<Stocks> stocks = createPortfolioController();
@@ -72,11 +70,12 @@ public class ControllerImpl implements Controller {
           break;
         }
 
+
         case 2: {
           this.out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
-          if (!UtilityClass.checkFileExists(portfolioName)) {
-            out.append(view.displayErrorMessage("\nPortfolio with name "
+          if (!UtilityClass.checkFileExists(portfolioName, false)) {
+            out.append(view.displayErrorMessage("Portfolio with name "
                     + portfolioName + " doesn't exist"));
           } else {
             examinePortfolioController(portfolioName, portfolio);
@@ -87,8 +86,8 @@ public class ControllerImpl implements Controller {
         case 3: {
           out.append(view.inputPortfolioName());
           String portfolioName = scan.next();
-          if (!UtilityClass.checkFileExists(portfolioName)) {
-            out.append(view.displayErrorMessage("\nPortfolio with name "
+          if (!UtilityClass.checkFileExists(portfolioName, false)) {
+            out.append(view.displayErrorMessage("Portfolio with name "
                     + portfolioName + " doesn't exist"));
           } else {
             out.append(view.showDateMessage(dateToday, lastHistoricDate));
@@ -104,7 +103,6 @@ public class ControllerImpl implements Controller {
           }
           break;
         }
-
         case 4: {
           run = false;
           break;
@@ -141,7 +139,7 @@ public class ControllerImpl implements Controller {
       if (choice == 1) {
         out.append(view.showNumberOfSharesMessage());
         stringNumberOfShares = scan.next();
-        isNum = UtilityClass.checkIfInteger(stringNumberOfShares, "Quit");
+        isNum = UtilityClass.checkIfPositiveInteger(stringNumberOfShares, "Quit");
       }
       switch (choice) {
         case 1: {
@@ -151,7 +149,8 @@ public class ControllerImpl implements Controller {
           } else if (isNum == 2) {
             run = false;
           } else {
-            out.append(view.displayErrorMessage("Please enter a valid integer value for number of stocks"));
+            out.append(view.displayErrorMessage("Please enter a valid integer value for number of "
+                    + "stocks. Enter ticker again."));
           }
           break;
         }
@@ -162,6 +161,9 @@ public class ControllerImpl implements Controller {
         case 0: {
           out.append(view.displayErrorMessage("Provided ticker is invalid\n"));
           break;
+        }
+        default: {
+          out.append(view.displayErrorMessage("Invalid ticker.\n"));
         }
       }
     }
@@ -190,24 +192,25 @@ public class ControllerImpl implements Controller {
    * This function helps in delegating tasks to the model and view when user wants to
    * view a portfolio.
    */
-  private void examinePortfolioController(String portfolioName, Portfolio portfolio) throws IOException {
-    List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
+  private void examinePortfolioController(String portfolioName,
+                                          Portfolio portfolio) throws IOException {
+    HashMap<String, Double> stocks = portfolio.examinePortfolio(portfolioName);
 
     View view = new ViewImpl();
     out.append(view.showPortfolio(stocks));
-
   }
 
   /**
    * This function helps in delegating tasks to the model and view when user wants to
    * get the total value of a portfolio.
    */
-  private void getTotalPortfolioValueController(String portfolioName, String date, Portfolio portfolio) throws IOException {
+  private void getTotalPortfolioValueController(String portfolioName, String date,
+                                                Portfolio portfolio) throws IOException {
     boolean isValidDate = UtilityClass.checkDateValidity(date);
     View view = new ViewImpl();
     if (isValidDate) {
-      List<String[]> stocks = portfolio.examinePortfolio(portfolioName);
-      Double totalValue = portfolio.getTotalValue(stocks, date);
+      HashMap<String, Double> stocks = portfolio.examinePortfolio(portfolioName);
+      Double totalValue = portfolio.getTotalValue(portfolioName, date);
 
       out.append(view.showTotalValue(portfolioName, date, totalValue));
     } else {
@@ -216,5 +219,4 @@ public class ControllerImpl implements Controller {
       }
     }
   }
-
 }

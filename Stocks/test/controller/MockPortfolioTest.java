@@ -23,7 +23,7 @@ public class MockPortfolioTest {
     StringBuilder log = new StringBuilder();
     int code = 1234621;
     cnt.start(new MockPortfolio(log, code));
-    assertEquals("mockTest1234621",log.toString());
+    assertEquals("mockTest1234621", log.toString());
   }
 
   @Test

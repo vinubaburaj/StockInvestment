@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio creation-date="2022-01-01">
+                        
+    
+    
+    
+    
+    <Portfolio-Name>finalTesting</Portfolio-Name>
+                    
+    
+    
+    
+    
+    <Stock>
+                                        
+        
+        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                                        
+        
+        
+        
+        <Commission>10.0</Commission>
+                                        
+        
+        
+        
+        <Date>2022-02-02</Date>
+                                        
+        
+        
+        
+        <Number-of-shares>20</Number-of-shares>
+                                    
+    
+    
+    
+    </Stock>
+                    
+    
+    
+    
+    <Stock>
+                                        
+        
+        
+        
+        <Stock-ticker>AAPL</Stock-ticker>
+                                        
+        
+        
+        
+        <Commission>10.0</Commission>
+                                        
+        
+        
+        
+        <Date>2022-03-03</Date>
+                                        
+        
+        
+        
+        <Number-of-shares>20</Number-of-shares>
+                                    
+    
+    
+    
+    </Stock>
+                
+    
+    
+    
+    <Stock>
+                                
+        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                                
+        
+        
+        <Commission>10.0</Commission>
+                                
+        
+        
+        <Number-of-shares>-20</Number-of-shares>
+                                
+        
+        
+        <Date>2022-03-03</Date>
+                            
+    
+    
+    </Stock>
+            
+    
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-03-03</Date>
+                        
+        
+        <Number-of-shares>3.38</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-03-03</Date>
+                        
+        
+        <Number-of-shares>11.39</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-04-04</Date>
+                        
+        
+        <Number-of-shares>3.17</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-04-04</Date>
+                        
+        
+        <Number-of-shares>11.46</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-05-04</Date>
+                        
+        
+        <Number-of-shares>3.45</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-05-04</Date>
+                        
+        
+        <Number-of-shares>11.47</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-06-03</Date>
+                        
+        
+        <Number-of-shares>3.7</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-06-03</Date>
+                        
+        
+        <Number-of-shares>11.89</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-07-05</Date>
+                        
+        
+        <Number-of-shares>3.8</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-07-05</Date>
+                        
+        
+        <Number-of-shares>13.14</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-08-04</Date>
+                        
+        
+        <Number-of-shares>3.53</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-08-04</Date>
+                        
+        
+        <Number-of-shares>11.72</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-09-06</Date>
+                        
+        
+        <Number-of-shares>3.95</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-09-06</Date>
+                        
+        
+        <Number-of-shares>11.75</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-10-06</Date>
+                        
+        
+        <Number-of-shares>4.05</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-10-06</Date>
+                        
+        
+        <Number-of-shares>12.3</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MSFT</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-11-07</Date>
+                        
+        
+        <Number-of-shares>4.39</Number-of-shares>
+                    
+    
+    </Stock>
+            
+    
+    <Stock>
+                        
+        
+        <Stock-ticker>MS</Stock-ticker>
+                        
+        
+        <Commission>10.0</Commission>
+                        
+        
+        <Date>2022-11-07</Date>
+                        
+        
+        <Number-of-shares>11.69</Number-of-shares>
+                    
+    
+    </Stock>
+        
+    
+    <Stock>
+                
+        <Stock-ticker>GOOGL</Stock-ticker>
+                
+        <Commission>15.0</Commission>
+                
+        <Date>2022-11-20</Date>
+                
+        <Number-of-shares>20</Number-of-shares>
+            
+    </Stock>
+    
+    <Stock>
+        <Stock-ticker>JPM</Stock-ticker>
+        <Commission>20.0</Commission>
+        <Date>2022-08-08</Date>
+        <Number-of-shares>20</Number-of-shares>
+    </Stock>
+</Portfolio>
