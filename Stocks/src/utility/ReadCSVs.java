@@ -5,11 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * The ReadCSVs is a Utility class that can be used from anywhere in the program to read any CSV
+ * The ReadCSVs is an Utility class that can be used from anywhere in the program to read any CSV
  * in the path provided. The methods are kept public to allow access from all classes in the
  * project.
  */
-public class ReadCSVs {
+public class ReadCSVs extends AbsGetDataFromSrc {
   private final String path;
 
   /**
@@ -21,35 +21,10 @@ public class ReadCSVs {
     this.path = path;
   }
 
-  /**
-   * The getDataByDate function accepts a date String and checks if there is any data
-   * against that particular date, and returns a string array of the data or empty array
-   * if the data was not found.
-   *
-   * @param date the date to get data from
-   */
-  public String[] getDataByDate(String date) {
+  @Override
+  public String[] getDataByDate(String date) throws IOException {
     BufferedReader reader = null;
-    String line = "";
-    try {
-      reader = new BufferedReader(new FileReader(path));
-      while ((line = reader.readLine()) != null) {
-        String[] lineArray = line.split(",");
-        if (lineArray[0].equals(date)) {
-          return lineArray;
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (reader != null) {
-          reader.close();
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return new String[0];
+    reader = new BufferedReader(new FileReader(path));
+    return absGetDataByDate(reader, date);
   }
 }

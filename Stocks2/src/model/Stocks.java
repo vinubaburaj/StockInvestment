@@ -1,7 +1,11 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import enums.stockTicker;
 import utility.ReadCSVs;
+import utility.ReadFromAlphaVantage;
 
 /**
  * This class represents a stock at a particular date.
@@ -28,13 +32,22 @@ public class Stocks {
    * Method that fetches the data of a stock from a file and returns true if
    * data was found and false otherwise.
    */
-  public boolean fillStockData(String date) {
-    String absolutePath = System.getProperty("user.dir");
-    String osSeperator = System.getProperty("file.separator");
-    String finalPath = absolutePath + osSeperator + "stocksData_csv" + osSeperator + "daily_"
-            + this.stockSymbol + ".csv";
-    ReadCSVs read = new ReadCSVs(finalPath);
-    String[] data = read.getDataByDate(date);
+  public boolean fillStockData(String date, boolean flexible) throws IOException {
+    String[] data ;
+    if(!flexible){
+      String absolutePath = System.getProperty("user.dir");
+      String osSeperator = System.getProperty("file.separator");
+      String finalPath = absolutePath + osSeperator + "stocksData_csv" + osSeperator + "daily_"
+              + this.stockSymbol + ".csv";
+
+      ReadCSVs read = new ReadCSVs(finalPath);
+      data = read.getDataByDate(date);
+    }else{
+      ReadFromAlphaVantage read =
+              new ReadFromAlphaVantage(this.getTicker(), "TIME_SERIES_DAILY");
+      data = read.getDataByDate(date);
+    }
+
     if (data.length == 6) {
       this.setDate(date);
       this.setValueOfShare(data[4]);

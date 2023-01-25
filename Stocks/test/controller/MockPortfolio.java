@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.Portfolio;
@@ -13,7 +14,7 @@ import model.Stocks;
  * This is done to check the functionality of controller
  * in isolation.
  */
-public class MockPortfolio implements Portfolio {
+class MockPortfolio implements Portfolio {
 
   private final StringBuilder log;
   private final int uniqueCode;
@@ -21,13 +22,15 @@ public class MockPortfolio implements Portfolio {
   /**
    * Constructor that takes a log and the unique code
    * which it returns to the controller to check for.
-   * @param log a logger checks the input provided.
+   *
+   * @param log        a logger checks the input provided.
    * @param uniqueCode a unique code that is logged to test.
    */
-  public MockPortfolio(StringBuilder log, int uniqueCode){
+  public MockPortfolio(StringBuilder log, int uniqueCode) {
     this.log = log;
     this.uniqueCode = uniqueCode;
   }
+
   @Override
   public void createPortfolio(List<Stocks> stocks, String portfolioName) {
     log.append(portfolioName);
@@ -35,7 +38,7 @@ public class MockPortfolio implements Portfolio {
   }
 
   @Override
-  public List<String[]> examinePortfolio(String portfolioName) {
+  public HashMap<String, Double> examinePortfolio(String portfolioName) {
     log.append(portfolioName);
     log.append(uniqueCode);
     List<String[]> ls = new ArrayList<>();
@@ -55,11 +58,11 @@ public class MockPortfolio implements Portfolio {
 
     ls.add(s1);
     ls.add(s2);
-    return ls;
+    return new HashMap<String, Double>();
   }
 
   @Override
-  public Double getTotalValue(List<String[]> stocks, String date) {
+  public Double getTotalValue(String portfolioName, String date) {
     log.append(date);
     log.append(uniqueCode);
     return 456.023;

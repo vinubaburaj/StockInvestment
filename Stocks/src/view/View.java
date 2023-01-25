@@ -1,7 +1,7 @@
 package view;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Interface that handles the view of the program.
@@ -11,7 +11,7 @@ public interface View {
   /**
    * Method that displays the main menu to the client.
    */
-  String showMenu();
+  String showInflexiblePortfolioMenu();
 
   /**
    * Method that shows the options of stocks available in this program.
@@ -35,7 +35,7 @@ public interface View {
    *
    * @param stocks list of stocks contained in the portfolio.
    */
-  String showPortfolio(List<String[]> stocks);
+  String showPortfolio(HashMap<String, Double> stocks);
 
   /**
    * Method to intimate user to enter portfolio name
@@ -79,4 +79,67 @@ public interface View {
    */
   String displayErrorMessage(String error);
 
+  /**
+   * Method that displays the different Portfolio types a user
+   * can work with in this program.
+   *
+   * @return the options of type of portfolios supported.
+   */
+  String showPortfolioOptions();
+
+  /**
+   * Method that displays the Portfolio menu options of flexible
+   * portfolio.
+   *
+   * @return the menu options for flexible portfolio
+   */
+  String showExistingFlexiblePortfolioMenu();
+
+  /**
+   * Method that displays a generic date message indicating the date format accepted.
+   *
+   * @return the generic date message
+   */
+  String showGenericDateMessage();
+
+  /**
+   * Method that shows the performance chart to the user.
+   *
+   * @return the performance chart
+   */
+  String showPerformanceChart(StringBuilder performanceChart);
+
+  /**
+   * Method that displays that the transation was successful.
+   *
+   * @return the success message
+   */
+  String showSuccessfulTransaction(String transaction);
+
+  /**
+   * Method that displays that the transation was unsuccessful.
+   *
+   * @return the failure message
+   */
+  String showUnsuccessfulTransaction(String transaction);
+
+  /**
+   * Method that displays that the commission was changed.
+   */
+  String showChangeCommissionMessage();
+
+  /**
+   * Method that displays any generic message.
+   */
+  String showGenericMessage(String message);
+
+  /**
+   * Method that concatenates two strings.
+   */
+  String concatenateStrings(String first, String second);
+
+  /**
+   * Method for showing menu.
+   */
+  String showMenu();
 }

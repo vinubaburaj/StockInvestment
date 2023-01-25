@@ -9,7 +9,7 @@ import java.io.IOException;
  * in the path provided. The methods are kept public to allow access from all classes in the
  * project.
  */
-public class ReadCSVs {
+public class ReadCSVs extends AbsGetDataFromSrc {
   private final String path;
 
   /**
@@ -28,28 +28,9 @@ public class ReadCSVs {
    *
    * @param date the date to get data from
    */
-  public String[] getDataByDate(String date) {
+  public String[] getDataByDate(String date) throws IOException {
     BufferedReader reader = null;
-    String line = "";
-    try {
-      reader = new BufferedReader(new FileReader(path));
-      while ((line = reader.readLine()) != null) {
-        String[] lineArray = line.split(",");
-        if (lineArray[0].equals(date)) {
-          return lineArray;
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (reader != null) {
-          reader.close();
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return new String[0];
+    reader = new BufferedReader(new FileReader(path));
+    return absGetDataByDate(reader, date);
   }
 }

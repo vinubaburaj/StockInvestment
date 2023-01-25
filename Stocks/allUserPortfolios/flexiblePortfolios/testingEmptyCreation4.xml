@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Portfolio creation-date="2022-02-02">
+        
+    <Portfolio-Name>testingEmptyCreation4</Portfolio-Name>
+    
+    <Stock>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Commission>10.0</Commission>
+        <Date>2022-10-12</Date>
+        <Number-of-shares>4.43</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>NFLX</Stock-ticker>
+        <Commission>10.0</Commission>
+        <Date>2022-10-12</Date>
+        <Number-of-shares>1.81</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>MS</Stock-ticker>
+        <Commission>10.0</Commission>
+        <Date>2022-10-12</Date>
+        <Number-of-shares>7.83</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>MSFT</Stock-ticker>
+        <Commission>10.0</Commission>
+        <Date>2022-11-11</Date>
+        <Number-of-shares>4.05</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>NFLX</Stock-ticker>
+        <Commission>10.0</Commission>
+        <Date>2022-11-11</Date>
+        <Number-of-shares>1.38</Number-of-shares>
+    </Stock>
+    <Stock>
+        <Stock-ticker>MS</Stock-ticker>
+        <Commission>10.0</Commission>
+        <Date>2022-11-11</Date>
+        <Number-of-shares>6.61</Number-of-shares>
+    </Stock>
+</Portfolio>

@@ -16,7 +16,6 @@ public enum stockTicker {
   ETSY("Etsy Inc"),
   JPM("JPMorgan Chase & Company"),
   MDB("MongoDB Inc - Class A"),
-  META("Meta Platforms Inc - Class A"),
   NFLX("Netflix Inc"),
   USAU("U.S. Gold Corp"),
   VOD("Vodafone Group plc"),
@@ -25,7 +24,7 @@ public enum stockTicker {
   private final String stockName;
 
   /**
-   * A constructor that
+   * A constructor that intializes the stockTicker string name.
    */
   stockTicker(String name) {
     this.stockName = name;

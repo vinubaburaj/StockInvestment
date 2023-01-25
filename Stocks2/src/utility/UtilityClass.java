@@ -1,9 +1,14 @@
 package utility;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import enums.stockTicker;
 
@@ -23,7 +28,7 @@ public final class UtilityClass {
    * @param num     the number to check
    * @param quitter the quitter string
    */
-  public static int checkIfInteger(String num, String quitter) {
+  public static int checkIfPositiveInteger(String num, String quitter) {
     try {
       Integer.parseInt(num);
     } catch (Exception e) {
@@ -32,7 +37,11 @@ public final class UtilityClass {
       }
       return 0;
     }
-    return 1;
+    if(Integer.parseInt(num) <= 0){
+      return 0;
+    }else{
+      return 1;
+    }
   }
 
   /**
@@ -66,9 +75,20 @@ public final class UtilityClass {
 //    String path = absolutePath + osSeperator + "allUserPortfolios" + osSeperator
 //            + "user1_portfolios" + osSeperator
 //            + portfolioName + ".xml";
-    String path = "src/allUserPortfolios/user1_portfolios/" + portfolioName + ".xml";
+    String path = "src/allUserPortfolios/flexiblePortfolios/" + portfolioName + ".xml";
     File filePath = new File(path);
     return filePath.exists();
+  }
+
+  public static boolean checkDateFormat(String date){
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    format.setLenient(false);
+    try {
+      format.parse(date);
+      return true;
+    } catch (ParseException e) {
+      return false;
+    }
   }
 
   /**
@@ -77,26 +97,21 @@ public final class UtilityClass {
    *
    * @param date the date to check
    */
-  public static boolean checkDateValidity(String date) {
+  public static boolean checkDateValidity(String date) throws IOException {
     String absolutePath = System.getProperty("user.dir");
     String osSeperator = System.getProperty("file.separator");
     String finalPath = absolutePath + osSeperator + "dates" + osSeperator + "dates.csv";
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    format.setLenient(false);
-    try {
-      format.parse(date);
-    } catch (ParseException e) {
-      return false;
-    }
-    LocalDate dateCur = LocalDate.parse(date);
-    int compareDateToToday = dateCur.compareTo(dateToday);
-    int compareDateToLast = dateCur.compareTo(lastHistoricDate);
+    if(checkDateFormat(date)){
+      LocalDate dateCur = LocalDate.parse(date);
+      int compareDateToToday = dateCur.compareTo(dateToday);
+      int compareDateToLast = dateCur.compareTo(lastHistoricDate);
 
-    if (compareDateToLast > 0 && compareDateToToday <= 0) {
-      ReadCSVs r = new ReadCSVs(finalPath);
-      String[] data = r.getDataByDate(date);
+      if (compareDateToLast > 0 && compareDateToToday <= 0) {
+        ReadCSVs r = new ReadCSVs(finalPath);
+        String[] data = r.getDataByDate(date);
 
-      return data.length > 0;
+        return data.length > 0;
+      }
     }
     return false;
   }
@@ -118,5 +133,43 @@ public final class UtilityClass {
       return false;
     }
     return n >= lowerLimit && n <= higherLimit;
+  }
+
+  public static boolean checkDateChronology(String stockChoice,String date,
+                                              String portfolioName) throws IOException{
+    if(checkDateFormat(date)){
+      String path = "src/allUserPortfolios/flexiblePortfolios/" + portfolioName + ".xml";
+      WorkWithFileTypes w = new WorkWithXML(path, portfolioName);
+      List<HashMap<String, String>> existingStocks = w.read();
+      LocalDate inputDate = LocalDate.parse(date);
+      LocalDate today = LocalDate.now();
+      if(inputDate.compareTo(today) >0){
+        return false;
+      }
+      for(HashMap<String, String> stock : existingStocks){
+        LocalDate stockDate = LocalDate.parse(stock.get("Date of transaction"));
+        if(stockChoice.equals(stock.get("Stock ticker")) &&
+                stockDate.compareTo(inputDate) > 0){
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  public static boolean checkDateBeforeCreatedDate(String portfolioName, String date){
+    String path = "src/allUserPortfolios/flexiblePortfolios/" + portfolioName + ".xml";
+    WorkWithFileTypes xml = new WorkWithXML(path, portfolioName);
+    LocalDate xmlCreatedDate = LocalDate.parse(xml.getFileCreationDate());
+    LocalDate inputDate = LocalDate.parse(date);
+    return inputDate.compareTo(xmlCreatedDate) < 0;
+  }
+
+  public static boolean checkDateAfterToday(String portfolioName, String date){
+    String path = "src/allUserPortfolios/flexiblePortfolios/" + portfolioName + ".xml";
+    LocalDate inputDate = LocalDate.parse(date);
+    LocalDate today = LocalDate.now();
+    return inputDate.compareTo(today) > 0;
   }
 }

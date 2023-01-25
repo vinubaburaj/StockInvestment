@@ -1,6 +1,7 @@
 package view;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public interface View {
    *
    * @param stocks list of stocks contained in the portfolio.
    */
-  String showPortfolio(List<String[]> stocks);
+  String showPortfolio(HashMap<String,Integer> stocks);
 
   /**
    * Method to intimate user to enter portfolio name
@@ -78,5 +79,13 @@ public interface View {
    * @param error the error message to be displayed.
    */
   String displayErrorMessage(String error);
+
+  /**
+   * Method that displays the different Portfolio types a user
+   * can work with in this program.
+   *
+   * @return the options of type of portfolios supported.
+   */
+  String showPortfolioOptions();
 
 }
